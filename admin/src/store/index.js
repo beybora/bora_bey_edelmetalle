@@ -6,3 +6,5 @@ const store = createStore({
     actions: {},
     mutations: {},
 });
+
+export default store;
