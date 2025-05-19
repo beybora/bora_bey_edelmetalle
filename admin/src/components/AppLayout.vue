@@ -1,10 +1,9 @@
 <template>
     <div class="min-h-full flex">
-        <Sidebar />
+        <Sidebar :is-open="isSidebarOpen" />
 
         <div class="flex-1">
-            <header class="h-8 shadow bg-white">Header</header>
-
+            <AdminHeader @toggle-sidebar="toggleSidebar" />
             <main>
                 <router-view></router-view>
             </main>
@@ -13,10 +12,15 @@
 </template>
 
 <script setup>
+import { ref } from "vue";
 import Sidebar from "./Sidebar.vue";
-defineProps({
-    title: {
-        type: String,
-    },
-});
+import AdminHeader from "./AdminHeader.vue";
+
+const isSidebarOpen = ref(true);
+
+function toggleSidebar() {
+    isSidebarOpen.value = !isSidebarOpen.value;
+}
 </script>
+
+<style scoped></style>
