@@ -7,6 +7,7 @@ import Login from "../views/Login.vue";
 import RequestPassword from "../views/RequestPassword.vue";
 import ResetPassword from "../views/ResetPassword.vue";
 import AppLayout from "../components/AppLayout.vue";
+import NotFound from "../views/NotFound.vue";
 import store from "../store/index.js";
 
 const routes = [
@@ -63,6 +64,11 @@ const routes = [
             requiresUnauth: true,
         },
         component: ResetPassword,
+    },
+    {
+        path: "/:pathMatch(.*)",
+        name: "notFound",
+        component: NotFound,
     },
 ];
 
