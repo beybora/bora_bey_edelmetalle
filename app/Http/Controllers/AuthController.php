@@ -9,13 +9,10 @@ class AuthController extends Controller
 {
     public function login(Request $request)
     {
-
-        $credentials = $request->validate(
-            [
-                'email' => ['required', 'email'],
-                'password' => 'required',
-            ]
-        );
+        $credentials = $request->validate([
+            'email' => ['required', 'email'],
+            'password' => 'required',
+        ]);
 
         $remember = $credentials['remember'] ?? false;
         unset($credentials['remember']);
@@ -43,11 +40,14 @@ class AuthController extends Controller
         ]);
     }
 
-
     public function logout()
     {
         $user = Auth::user();
-        $user->currentAccessToken()->delete();
+
+        // Wenn kein Token vorhanden ist, nicht crashen
+        if ($user?->currentAccessToken()) {
+            $user->currentAccessToken()->delete();
+        }
 
         return response('Logged out successfully', 204);
     }
