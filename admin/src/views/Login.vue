@@ -1,6 +1,6 @@
 <template>
     <AuthLayout title="Login to your account">
-        <form class="space-y-6" action="#" method="POST">
+        <form class="space-y-6" @submit.prevent="login" method="POST">
             <div>
                 <label
                     for="email"
@@ -9,6 +9,7 @@
                 >
                 <div class="mt-2">
                     <input
+                        v-model="user.email"
                         type="email"
                         name="email"
                         id="email"
@@ -37,6 +38,7 @@
                 </div>
                 <div class="mt-2">
                     <input
+                        v-model="user.password"
                         type="password"
                         name="password"
                         id="password"
@@ -60,5 +62,32 @@
 </template>
 
 <script setup>
+import { ref } from "vue";
 import AuthLayout from "../components/AuthLayout.vue";
+import store from "../store/index.js";
+import router from "../router/index.js";
+
+let loading = ref(false);
+let errorMsg = ref("");
+
+const user = {
+    email: "",
+    password: "",
+};
+
+function login() {
+    loading.value = true;
+    errorMsg.value = "";
+
+    store
+        .dispatch("login", user)
+        .then(() => {
+            loading.value = false;
+            router.push({ name: "app.dashboard" });
+        })
+        .catch((error) => {
+            loading.value = false;
+            errorMsg.value = error.response.data.message;
+        });
+}
 </script>
