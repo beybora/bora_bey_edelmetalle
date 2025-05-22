@@ -15,7 +15,7 @@
                     src="https://randomuser.me/api/portraits/men/1.jpg"
                     class="rounded-full w-8 mr-2"
                 />
-                <small>John Smith</small>
+                <small>{{ currentUser }} </small>
                 <ChevronDownIcon
                     class="h-5 w-5 text-gray-500 hover:text-gray-700 ml-1"
                     aria-hidden="true"
@@ -84,8 +84,11 @@ import {
 import { Menu, MenuButton, MenuItems, MenuItem } from "@headlessui/vue";
 import store from "../store/index.js";
 import router from "../router/index.js";
+import { computed } from "vue";
 
 const emit = defineEmits(["toggle-sidebar"]);
+
+const currentUser = computed(() => store.state.user.data.email);
 
 const logout = () => {
     store.dispatch("logout").then(() => {
