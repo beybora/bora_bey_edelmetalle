@@ -23,3 +23,15 @@ export function logout({ commit }) {
             throw error;
         });
 }
+
+export function getUser({ commit }) {
+    return axiosClient
+        .get("/user")
+        .then(({ data }) => {
+            commit("setUser", data.user);
+            return data;
+        })
+        .catch((error) => {
+            throw error;
+        });
+}
