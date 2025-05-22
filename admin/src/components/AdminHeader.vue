@@ -52,6 +52,7 @@
                         </MenuItem>
                         <MenuItem v-slot="{ active }">
                             <button
+                                @click="logout"
                                 :class="[
                                     active
                                         ? 'bg-indigo-600 text-white'
@@ -81,8 +82,16 @@ import {
     UserIcon,
 } from "@heroicons/vue/20/solid";
 import { Menu, MenuButton, MenuItems, MenuItem } from "@headlessui/vue";
+import store from "../store/index.js";
+import router from "../router/index.js";
 
 const emit = defineEmits(["toggle-sidebar"]);
+
+const logout = () => {
+    store.dispatch("logout").then(() => {
+        router.push({ name: "login" });
+    });
+};
 </script>
 
 <style scoped></style>
