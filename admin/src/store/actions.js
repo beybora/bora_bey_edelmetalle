@@ -59,3 +59,26 @@ export function getProducts(
             commit("setProductsLoading", false);
         });
 }
+
+export function createProduct({ commit }, product) {
+    return axiosClient
+        .post("/products", product)
+        .then(({ data }) => {
+            commit("addProduct", data);
+        })
+        .catch((error) => {
+            throw error;
+        });
+}
+
+export function updateProduct({ commit }, product) {
+    return axiosClient
+        .put(`/products/${product.id}`, product)
+        .then(({ data }) => {
+            commit("updateProduct", data);
+            return data;
+        })
+        .catch((error) => {
+            throw error;
+        });
+}
