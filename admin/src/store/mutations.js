@@ -20,6 +20,10 @@ export function setProductsLoading(state, loading) {
     state.products.loading = loading;
 }
 
+export function addProduct(state, product) {
+    state.products.data.data.unshift(product.data);
+}
+
 export function updateProduct(state, updatedProduct) {
     const index = state.products.data.data.findIndex(
         (product) => product.id === updatedProduct.id
@@ -28,8 +32,4 @@ export function updateProduct(state, updatedProduct) {
     if (index !== -1) {
         state.products.data.data[index] = updatedProduct;
     }
-}
-
-export function addProduct(state, product) {
-    state.products.data.data.unshift(product);
 }

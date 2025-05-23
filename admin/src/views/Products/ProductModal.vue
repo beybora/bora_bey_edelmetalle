@@ -61,7 +61,7 @@
                                     <button
                                         type="button"
                                         class="px-4 py-2 bg-gray-100 text-sm rounded border"
-                                        @click="closeModal"
+                                        @click="onCancel"
                                     >
                                         Cancel
                                     </button>
@@ -104,9 +104,7 @@ import store from "../../store/index.js";
 const emit = defineEmits(["update:modelValue"]);
 const props = defineProps({
     modelValue: Boolean,
-    product: {
-        type: Object,
-    },
+    product: Object,
 });
 
 const loading = ref(false);
@@ -123,17 +121,22 @@ function closeModal() {
     emit("update:modelValue", false);
 }
 
+function onCancel() {
+    closeModal();
+    product.value = { ...props.product };
+}
+
 async function onSubmit() {
     loading.value = true;
 
     const action = product.value.id ? "updateProduct" : "createProduct";
-    const result = await store.dispatch(action, product.value);
+
+    const response = await store.dispatch(action, product.value);
 
     loading.value = false;
 
-    if (result && result.status === 200) {
-        store.dispatch("getProducts");
-        closeModal();
+    if (response && response.data.id) {
+        onCancel();
     }
 }
 </script>
