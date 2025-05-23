@@ -39,8 +39,7 @@
                 </tr>
             </thead>
 
-            <!-- Wenn Produkte vorhanden sind -->
-            <tbody v-if="products.data.length > 0">
+            <tbody v-if="products.data?.length > 0">
                 <tr v-for="product in products.data" :key="product.id">
                     <td class="border-b p-2">{{ product.id }}</td>
                     <td class="border-b p-2">
