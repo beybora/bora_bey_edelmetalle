@@ -1,5 +1,5 @@
 <template>
-    <div class="bg-white p-4 rounded-lg shadow">
+    <div class="bg-white p-4 shadow">
         <!-- Controls -->
         <div class="flex justify-between border-b-2 pb-3">
             <div class="flex items-center">
@@ -28,49 +28,96 @@
             />
         </div>
 
-        <table class="table-auto w-full mt-4">
+        <!-- Table -->
+        <table class="table-fixed w-full mt-4 border-collapse">
             <thead>
-                <tr>
-                    <th class="px-4 py-2">ID</th>
-                    <th class="px-4 py-2">Image</th>
-                    <th class="px-4 py-2">Title</th>
-                    <th class="px-4 py-2">Price</th>
-                    <th class="px-4 py-2">Last updated</th>
+                <tr class="text-left">
+                    <th class="w-12 px-4 py-2">ID</th>
+                    <th class="w-20 px-4 py-2">Image</th>
+                    <th class="w-1/4 px-4 py-2">Title</th>
+                    <th class="w-24 px-4 py-2">Price</th>
+                    <th class="w-56 px-4 py-2">Last updated</th>
+                    <th class="w-16 px-4 py-2 text-right">Actions</th>
                 </tr>
             </thead>
 
             <tbody v-if="products.data?.length > 0">
-                <tr v-for="product in products.data" :key="product.id">
-                    <td class="border-b p-2">{{ product.id }}</td>
-                    <td class="border-b p-2">
+                <tr
+                    v-for="product in products.data"
+                    :key="product.id"
+                    class="border-t"
+                >
+                    <td class="px-4 py-2">{{ product.id }}</td>
+                    <td class="px-4 py-2">
                         <img
                             v-if="product.image"
-                            class="w-16 h-16 object-cover"
+                            class="w-12 h-12 object-cover"
                             :src="product.image"
                             :alt="product.title"
                         />
                         <img
                             v-else
-                            class="w-16 h-16 object-cover"
+                            class="w-12 h-12 object-cover"
                             src="../../assets/noimage.png"
                             alt="No image"
                         />
                     </td>
-                    <td
-                        class="border-b p-2 max-w-[200px] whitespace-nowrap overflow-hidden text-ellipsis"
-                    >
+                    <td class="px-4 py-2 truncate max-w-[200px]">
                         {{ product.title }}
                     </td>
-                    <td class="border-b p-2">{{ product.price }}</td>
-                    <td class="border-b p-2">{{ product.updated_at }}</td>
+                    <td class="px-4 py-2">{{ product.price }}</td>
+                    <td class="px-4 py-2">{{ product.updated_at }}</td>
+                    <td class="px-4 py-2 text-right">
+                        <Menu as="div" class="relative inline-block text-left">
+                            <MenuButton class="p-2 hover:bg-gray-100 rounded">
+                                <EllipsisVerticalIcon
+                                    class="h-5 w-5 text-gray-500"
+                                />
+                            </MenuButton>
+                            <MenuItems
+                                class="absolute right-0 mt-2 w-40 origin-top-right bg-white divide-y divide-gray-100 shadow-lg ring-1 ring-black/5 focus:outline-none"
+                            >
+                                <div class="px-1 py-1">
+                                    <MenuItem v-slot="{ active }">
+                                        <button
+                                            :class="[
+                                                active
+                                                    ? 'bg-indigo-500 text-white'
+                                                    : 'text-gray-900',
+                                                'group flex w-full items-center px-2 py-2 text-sm',
+                                            ]"
+                                        >
+                                            <PencilSquareIcon
+                                                class="mr-2 h-5 w-5"
+                                            />
+                                            Edit
+                                        </button>
+                                    </MenuItem>
+                                    <MenuItem v-slot="{ active }">
+                                        <button
+                                            @click="deleteProduct(product.id)"
+                                            :class="[
+                                                active
+                                                    ? 'bg-red-500 text-white'
+                                                    : 'text-gray-900',
+                                                'group flex w-full items-center px-2 py-2 text-sm',
+                                            ]"
+                                        >
+                                            <TrashIcon class="mr-2 h-5 w-5" />
+                                            Delete
+                                        </button>
+                                    </MenuItem>
+                                </div>
+                            </MenuItems>
+                        </Menu>
+                    </td>
                 </tr>
             </tbody>
 
-            <!-- Wenn keine Produkte vorhanden sind -->
             <tbody v-else>
                 <tr>
                     <td
-                        colspan="5"
+                        colspan="6"
                         class="text-center text-gray-500 italic py-6"
                     >
                         Keine Einträge gefunden.<br />
@@ -110,6 +157,12 @@
 
 <script setup>
 import { ref, computed, onMounted } from "vue";
+import { Menu, MenuButton, MenuItems, MenuItem } from "@headlessui/vue";
+import {
+    EllipsisVerticalIcon,
+    PencilSquareIcon,
+    TrashIcon,
+} from "@heroicons/vue/20/solid";
 import store from "../../store/index.js";
 
 const perPage = ref(10);
@@ -133,5 +186,13 @@ function goTo(link) {
     const url = new URL(link.url);
     const page = url.searchParams.get("page");
     getProducts(page);
+}
+
+function openEditModal(product) {
+    console.log("Editing product:", product);
+}
+
+function deleteProduct(id) {
+    console.log("Deleting product with ID:", id);
 }
 </script>
