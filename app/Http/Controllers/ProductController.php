@@ -15,12 +15,17 @@ class ProductController extends Controller
     {
         $search = request('search');
         $perPage = request('per_page', 10); // Fallback auf 10, wenn nichts angegeben
+        $sortField = request('sort_field', 'created_at');
+        $sortDirection = request('sort_direction', 'desc');
 
         $query = Product::query();
 
         if ($search) {
             $query->where('title', 'LIKE', "%{$search}%");
         }
+
+        // Sortierung anwenden
+        $query->orderBy($sortField, $sortDirection);
 
         $products = $query->paginate($perPage)->withQueryString();
 

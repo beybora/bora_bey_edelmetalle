@@ -18,4 +18,6 @@ class Product extends Model
             ->generateSlugsFrom('title')
             ->saveSlugsTo('slug');
     }
+
+    protected $fillable = ['title', 'description', 'price'];
 }
