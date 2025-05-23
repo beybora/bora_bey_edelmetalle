@@ -1,6 +1,6 @@
 <template>
     <TransitionRoot appear :show="modelValue" as="template">
-        <Dialog as="div" @close="closeModal" class="relative z-10">
+        <Dialog as="div" class="relative z-10" @close="closeModal">
             <TransitionChild
                 as="template"
                 enter="duration-300 ease-out"
@@ -27,29 +27,60 @@
                         leave-to="opacity-0 scale-95"
                     >
                         <DialogPanel
-                            class="w-full max-w-md transform overflow-hidden rounded-2xl bg-white p-6 text-left align-middle shadow-xl transition-all"
+                            class="w-full max-w-md bg-white p-6 rounded shadow-xl text-left transition-all"
                         >
                             <DialogTitle
-                                as="h3"
-                                class="text-lg font-medium leading-6 text-gray-900"
+                                class="text-lg font-medium text-gray-900 mb-4"
                             >
-                                Produkt hinzufügen
+                                {{
+                                    product.id
+                                        ? "Update product"
+                                        : "Create new product"
+                                }}
                             </DialogTitle>
-                            <div class="mt-2">
-                                <p class="text-sm text-gray-500">
-                                    Neues proddukt hinzufügen
-                                </p>
-                            </div>
 
-                            <div class="mt-4">
-                                <button
-                                    type="button"
-                                    class="inline-flex justify-center rounded-md border border-transparent bg-blue-100 px-4 py-2 text-sm font-medium text-blue-900 hover:bg-blue-200 focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 focus-visible:ring-offset-2"
-                                    @click="closeModal"
-                                >
-                                    Schließen
-                                </button>
-                            </div>
+                            <form @submit.prevent="onSubmit">
+                                <CustomInput
+                                    v-model="product.title"
+                                    label="Title"
+                                    class="mb-4"
+                                />
+                                <CustomInput
+                                    v-model="product.description"
+                                    label="Description"
+                                    class="mb-4"
+                                />
+                                <CustomInput
+                                    v-model="product.price"
+                                    type="number"
+                                    label="Price"
+                                    class="mb-4"
+                                />
+
+                                <div class="flex justify-end space-x-2 mt-6">
+                                    <button
+                                        type="button"
+                                        class="px-4 py-2 bg-gray-100 text-sm rounded border"
+                                        @click="closeModal"
+                                    >
+                                        Cancel
+                                    </button>
+
+                                    <button
+                                        type="submit"
+                                        :disabled="loading"
+                                        class="px-4 py-2 bg-indigo-600 text-white text-sm rounded hover:bg-indigo-700"
+                                    >
+                                        {{
+                                            loading
+                                                ? "Saving..."
+                                                : product.id
+                                                ? "Update"
+                                                : "Create"
+                                        }}
+                                    </button>
+                                </div>
+                            </form>
                         </DialogPanel>
                     </TransitionChild>
                 </div>
@@ -59,25 +90,50 @@
 </template>
 
 <script setup>
-import { defineProps, defineEmits } from "vue";
+import { ref, defineProps, defineEmits, watch } from "vue";
 import {
-    TransitionRoot,
-    TransitionChild,
     Dialog,
     DialogPanel,
     DialogTitle,
+    TransitionChild,
+    TransitionRoot,
 } from "@headlessui/vue";
+import CustomInput from "../../components/core/CustomInput.vue";
+import store from "../../store/index.js";
 
-// Props & Emits für v-model
+const emit = defineEmits(["update:modelValue"]);
 const props = defineProps({
-    modelValue: {
-        type: Boolean,
-        required: true,
+    modelValue: Boolean,
+    product: {
+        type: Object,
     },
 });
-const emit = defineEmits(["update:modelValue"]);
+
+const loading = ref(false);
+const product = ref({ ...props.product });
+
+watch(
+    () => props.product,
+    (newProduct) => {
+        product.value = { ...newProduct };
+    }
+);
 
 function closeModal() {
-    emit("update:modelValue", false); // setzt den Wert im Parent auf false
+    emit("update:modelValue", false);
+}
+
+async function onSubmit() {
+    loading.value = true;
+
+    const action = product.value.id ? "updateProduct" : "createProduct";
+    const result = await store.dispatch(action, product.value);
+
+    loading.value = false;
+
+    if (result && result.status === 200) {
+        store.dispatch("getProducts");
+        closeModal();
+    }
 }
 </script>
