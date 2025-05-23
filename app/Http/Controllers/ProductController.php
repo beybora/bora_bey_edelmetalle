@@ -11,14 +11,22 @@ class ProductController extends Controller
 {
     /**
      * Display a listing of the resource.
-     */
-    public function index()
+     */ public function index()
     {
-        return ProductListResource::collection(
-            Product::query()
-                ->paginate(10)
-        );
+        $search = request('search');
+        $perPage = request('per_page', 10); // Fallback auf 10, wenn nichts angegeben
+
+        $query = Product::query();
+
+        if ($search) {
+            $query->where('title', 'LIKE', "%{$search}%");
+        }
+
+        $products = $query->paginate($perPage)->withQueryString();
+
+        return ProductListResource::collection($products);
     }
+
 
     /**
      * Store a newly created resource in storage.
