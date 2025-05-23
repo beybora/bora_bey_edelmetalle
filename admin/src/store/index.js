@@ -8,7 +8,12 @@ const store = createStore({
             token: sessionStorage.getItem("TOKEN") || null,
             data: {},
         },
+        products: {
+            loading: false,
+            data: [],
+        },
     },
+
     getters: {},
     actions: actions,
     mutations: mutations,

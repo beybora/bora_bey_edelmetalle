@@ -35,3 +35,19 @@ export function getUser({ commit }) {
             throw error;
         });
 }
+
+export function getProducts({ commit }) {
+    commit("setProductsLoading", true);
+    axiosClient
+        .get("/products")
+        .then(({ data }) => {
+            commit("setProducts", data);
+            return data;
+        })
+        .catch((error) => {
+            throw error;
+        })
+        .finally(() => {
+            commit("setProductsLoading", false);
+        });
+}

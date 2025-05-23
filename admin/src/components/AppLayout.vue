@@ -4,7 +4,7 @@
 
         <div class="flex-1">
             <AdminHeader @toggle-sidebar="toggleSidebar" />
-            <main>
+            <main class="p-5">
                 <router-view></router-view>
             </main>
         </div>

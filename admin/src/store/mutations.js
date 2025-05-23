@@ -11,3 +11,11 @@ export function setToken(state, token) {
         sessionStorage.removeItem("TOKEN");
     }
 }
+
+export function setProducts(state, products) {
+    state.products.data = products;
+}
+
+export function setProductsLoading(state, loading) {
+    state.products.loading = loading;
+}
