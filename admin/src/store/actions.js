@@ -36,10 +36,18 @@ export function getUser({ commit }) {
         });
 }
 
-export function getProducts({ commit }) {
+export function getProducts(
+    { commit },
+    { search = "", perPage = 10, page = 1 }
+) {
     commit("setProductsLoading", true);
-    axiosClient
-        .get("/products")
+    return axiosClient
+        .get("/products", {
+            params: {
+                search,
+                per_page: perPage,
+            },
+        })
         .then(({ data }) => {
             commit("setProducts", data);
             return data;

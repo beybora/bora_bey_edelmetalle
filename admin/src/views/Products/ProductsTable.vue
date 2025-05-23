@@ -1,12 +1,12 @@
 <template>
     <div class="bg-white p-4 rounded-lg shadow">
-        <!-- Filter Controls -->
+        <!-- Controls -->
         <div class="flex justify-between border-b-2 pb-3">
             <div class="flex items-center">
                 <span class="whitespace-nowrap mr-3">Per Page</span>
                 <select
                     v-model="perPage"
-                    @change="getProducts"
+                    @change="() => getProducts(1)"
                     class="w-24 px-3 py-2 border border-gray-300 rounded-md focus:ring-indigo-500"
                 >
                     <option
@@ -22,13 +22,12 @@
             <input
                 type="text"
                 v-model="search"
-                @keyup.enter="getProducts"
+                @keyup.enter="() => getProducts(1)"
                 placeholder="Search..."
                 class="w-1/3 px-3 py-2 border border-gray-300 rounded-md focus:ring-indigo-500"
             />
         </div>
 
-        <!-- Table -->
         <table class="table-auto w-full mt-4">
             <thead>
                 <tr>
@@ -39,7 +38,9 @@
                     <th class="px-4 py-2">Last updated</th>
                 </tr>
             </thead>
-            <tbody>
+
+            <!-- Wenn Produkte vorhanden sind -->
+            <tbody v-if="products.data.length > 0">
                 <tr v-for="product in products.data" :key="product.id">
                     <td class="border-b p-2">{{ product.id }}</td>
                     <td class="border-b p-2">
@@ -63,6 +64,19 @@
                     </td>
                     <td class="border-b p-2">{{ product.price }}</td>
                     <td class="border-b p-2">{{ product.updated_at }}</td>
+                </tr>
+            </tbody>
+
+            <!-- Wenn keine Produkte vorhanden sind -->
+            <tbody v-else>
+                <tr>
+                    <td
+                        colspan="5"
+                        class="text-center text-gray-500 italic py-6"
+                    >
+                        Keine Einträge gefunden.<br />
+                        Bitte Suchbegriff prüfen oder Filter anpassen.
+                    </td>
                 </tr>
             </tbody>
         </table>
@@ -110,7 +124,7 @@ onMounted(() => {
 function getProducts(page = 1) {
     store.dispatch("getProducts", {
         page,
-        per_page: perPage.value,
+        perPage: perPage.value,
         search: search.value,
     });
 }
