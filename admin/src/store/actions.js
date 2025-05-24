@@ -87,7 +87,7 @@ export function deleteProduct({ commit }, productId) {
     return axiosClient
         .delete(`/products/${productId}`)
         .then(() => {
-            commit("removeProduct", productId);
+            return productId;
         })
         .catch((error) => {
             throw error;
