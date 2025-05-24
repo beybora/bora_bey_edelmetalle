@@ -101,7 +101,8 @@ import {
 import CustomInput from "../../components/core/CustomInput.vue";
 import store from "../../store/index.js";
 
-const emit = defineEmits(["update:modelValue"]);
+const emit = defineEmits(["update:modelValue", "updated"]);
+
 const props = defineProps({
     modelValue: Boolean,
     product: Object,
@@ -136,6 +137,7 @@ async function onSubmit() {
     loading.value = false;
 
     if (response && response.data.id) {
+        emit("updated");
         onCancel();
     }
 }

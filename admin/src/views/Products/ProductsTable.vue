@@ -153,6 +153,13 @@
                 ></a>
             </nav>
         </div>
+
+        <!-- Modal -->
+        <ProductModal
+            v-model="showModal"
+            :product="selectedProduct"
+            @updated="getProducts"
+        />
     </div>
 </template>
 
@@ -165,10 +172,14 @@ import {
     TrashIcon,
 } from "@heroicons/vue/20/solid";
 import store from "../../store/index.js";
+import ProductModal from "./ProductModal.vue";
 
 const perPage = ref(10);
 const search = ref("");
 const products = computed(() => store.state.products.data);
+
+const showModal = ref(false);
+const selectedProduct = ref({});
 
 onMounted(() => {
     getProducts();
@@ -190,7 +201,8 @@ function goTo(link) {
 }
 
 function editProduct(product) {
-    console.log("edit product", product);
+    selectedProduct.value = { ...product };
+    showModal.value = true;
 }
 
 function deleteProduct(id) {
