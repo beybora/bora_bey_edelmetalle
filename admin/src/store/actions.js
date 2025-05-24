@@ -82,3 +82,14 @@ export function updateProduct({ commit }, product) {
             throw error;
         });
 }
+
+export function deleteProduct({ commit }, productId) {
+    return axiosClient
+        .delete(`/products/${productId}`)
+        .then(() => {
+            commit("removeProduct", productId);
+        })
+        .catch((error) => {
+            throw error;
+        });
+}

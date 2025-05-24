@@ -33,3 +33,13 @@ export function updateProduct(state, updatedProduct) {
         state.products.data.data[index] = updatedProduct;
     }
 }
+
+export function deleteProduct(state, productId) {
+    const index = state.products.data.data.findIndex(
+        (product) => product.id === productId
+    );
+
+    if (index !== -1) {
+        state.products.data.data.splice(index, 1);
+    }
+}

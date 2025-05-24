@@ -80,6 +80,7 @@
                                 <div class="px-1 py-1">
                                     <MenuItem v-slot="{ active }">
                                         <button
+                                            @click="editProduct(product)"
                                             :class="[
                                                 active
                                                     ? 'bg-indigo-500 text-white'
@@ -188,11 +189,15 @@ function goTo(link) {
     getProducts(page);
 }
 
-function openEditModal(product) {
-    console.log("Editing product:", product);
+function editProduct(product) {
+    console.log("edit product", product);
 }
 
 function deleteProduct(id) {
-    console.log("Deleting product with ID:", id);
+    if (confirm("Bist du sicher, dass du dieses Produkt löschen willst?")) {
+        store.dispatch("deleteProduct", id).then(() => {
+            getProducts();
+        });
+    }
 }
 </script>
