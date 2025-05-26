@@ -13,11 +13,14 @@ Route::middleware('auth:sanctum', 'admin')->group(function () {
     Route::resource('/products', ProductController::class);
 });
 
+Route::get('/shop/products', [ProductController::class, 'index']);
+
 Route::post('login', [AuthController::class, 'login']);
 
 
 Route::prefix('shop')->group(function () {
     Route::post('login', [ShopAuthController::class, 'login']);
+    Route::post('register', [ShopAuthController::class, 'register']);
 
     Route::middleware('auth:sanctum')->group(function () {
         Route::get('user', [ShopAuthController::class, 'getUser']);
