@@ -1,6 +1,14 @@
+<!-- pages/index.vue -->
 <template>
-    <div class="p-8">
-        <h1 class="text-2xl font-bold">Willkommen im Edelmetall-Shop</h1>
-        <p class="text-gray-600 mt-2">Das ist deine Startseite</p>
-    </div>
+    <ShopLayout>
+        <div class="p-8">
+            <h1 class="text-2xl font-bold mb-4">All Products</h1>
+            <ProductList />
+        </div>
+    </ShopLayout>
 </template>
+
+<script setup>
+import ShopLayout from "~/components/layouts/ShopLayout.vue";
+import ProductList from "~/components/ProductList.vue";
+</script>
