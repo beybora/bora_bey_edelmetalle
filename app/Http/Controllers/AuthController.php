@@ -45,7 +45,6 @@ class AuthController extends Controller
     {
         $user = Auth::user();
 
-        // Wenn kein Token vorhanden ist, nicht crashen
         if ($user?->currentAccessToken()) {
             $user->currentAccessToken()->delete();
         }
