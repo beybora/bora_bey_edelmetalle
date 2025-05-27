@@ -2,7 +2,7 @@ import axiosClient from "../axios";
 
 export function login({ commit }, user) {
     return axiosClient
-        .post("/login", user)
+        .post("/admin/login", user)
         .then(({ data }) => {
             commit("setUser", data.user);
             commit("setToken", data.token);
@@ -15,7 +15,7 @@ export function login({ commit }, user) {
 
 export function logout({ commit }) {
     return axiosClient
-        .post("/logout")
+        .post("/admin/logout")
         .then(() => {
             commit("setToken", null);
         })
@@ -26,7 +26,7 @@ export function logout({ commit }) {
 
 export function getUser({ commit }) {
     return axiosClient
-        .get("/user")
+        .get("/admin/user")
         .then(({ data }) => {
             commit("setUser", data.user);
             return data;
@@ -42,7 +42,7 @@ export function getProducts(
 ) {
     commit("setProductsLoading", true);
     return axiosClient
-        .get("/products", {
+        .get("/admin/products", {
             params: {
                 search,
                 per_page: perPage,
@@ -62,7 +62,7 @@ export function getProducts(
 
 export function createProduct({ commit }, product) {
     return axiosClient
-        .post("/products", product)
+        .post("/admin/products", product)
         .then(({ data }) => {
             commit("addProduct", data);
             return data;
@@ -74,7 +74,7 @@ export function createProduct({ commit }, product) {
 
 export function updateProduct({ commit }, product) {
     return axiosClient
-        .put(`/products/${product.id}`, product)
+        .put(`/admin/products/${product.id}`, product)
         .then(({ data }) => {
             return data;
         })
@@ -85,7 +85,7 @@ export function updateProduct({ commit }, product) {
 
 export function deleteProduct({ commit }, productId) {
     return axiosClient
-        .delete(`/products/${productId}`)
+        .delete(`/admin/products/${productId}`)
         .then(() => {
             return productId;
         })
