@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\ProductController;
+use App\Http\Controllers\Shop\CartController;
 use App\Http\Controllers\Shop\ShopAuthController;
 use App\Http\Controllers\Shop\UserController as ShopUserController;
 use Illuminate\Support\Facades\Route;
@@ -43,5 +44,11 @@ Route::prefix('shop')->group(function () {
         Route::get('/user/profile', [ShopUserController::class, 'show']);
         Route::put('/user/profile', [ShopUserController::class, 'updateProfile']);
         Route::put('/user/password', [ShopUserController::class, 'updatePassword']);
+
+        // Cart Management
+        Route::get('/cart', [CartController::class, 'index']);
+        Route::post('/cart', [CartController::class, 'store']);
+        Route::put('/cart/{id}', [CartController::class, 'update']);
+        Route::delete('/cart/{id}', [CartController::class, 'destroy']);
     });
 });
