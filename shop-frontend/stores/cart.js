@@ -11,29 +11,40 @@ export const useCartStore = defineStore("cart", {
         async fetchCart() {
             const auth = useAuthStore();
             const { $axios } = useNuxtApp();
-            const res = await $axios.get("/shop/cart", {
-                headers: {
-                    Authorization: `Bearer ${auth.token}`,
-                },
-            });
-            this.items = res.data.items;
+
+            if (!auth.token) return;
+
+            try {
+                const res = await $axios.get("/shop/cart", {
+                    headers: {
+                        Authorization: `Bearer ${auth.token}`,
+                    },
+                });
+                this.items = res.data.items;
+            } catch (error) {
+                console.error("Error laoading the cart", error);
+            }
         },
 
         async addToCart(productId, quantity = 1) {
             const auth = useAuthStore();
             const { $axios } = useNuxtApp();
 
-            const res = await $axios.post(
-                "/shop/cart",
-                { product_id: productId, quantity },
-                {
-                    headers: {
-                        Authorization: `Bearer ${auth.token}`,
-                    },
-                }
-            );
+            try {
+                await $axios.post(
+                    "/shop/cart",
+                    { product_id: productId, quantity },
+                    {
+                        headers: {
+                            Authorization: `Bearer ${auth.token}`,
+                        },
+                    }
+                );
 
-            await this.fetchCart(); // sofort aktualisieren
+                await this.fetchCart();
+            } catch (error) {
+                console.error("Error loading the cart", error);
+            }
         },
     },
 });

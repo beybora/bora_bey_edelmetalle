@@ -26,7 +26,7 @@
                                 to="/"
                                 class="shrink-0 text-white text-lg font-bold"
                             >
-                                MyShop
+                                BB Edelmetalle
                             </NuxtLink>
                             <div
                                 class="hidden md:block ml-10 flex items-baseline space-x-4"
@@ -43,9 +43,15 @@
                         <div class="flex items-center space-x-4">
                             <NuxtLink
                                 to="/cart"
-                                class="text-gray-300 hover:text-white"
+                                class="relative text-gray-300 hover:text-white"
                             >
                                 <ShoppingCartIcon class="h-6 w-6" />
+                                <span
+                                    v-if="cartCount > 0"
+                                    class="absolute -top-2 -right-2 bg-red-600 text-white text-xs rounded-full px-1"
+                                >
+                                    {{ cartCount }}
+                                </span>
                             </NuxtLink>
 
                             <div v-if="isLoggedIn">
@@ -122,13 +128,19 @@ import {
 } from "@headlessui/vue";
 import { ShoppingCartIcon } from "@heroicons/vue/24/outline";
 import { useAuthStore } from "~/stores/auth";
+import { useCartStore } from "~/stores/cart";
 import { onMounted, ref, computed } from "vue";
 
 const auth = useAuthStore();
+const cart = useCartStore();
+
 const loading = ref(true);
 
 const isLoggedIn = computed(() => auth.isLoggedIn);
 const userEmail = computed(() => auth.userEmail);
+const cartCount = computed(() =>
+    cart.items.reduce((sum, item) => sum + item.quantity, 0)
+);
 
 function logout() {
     auth.logout();
@@ -138,6 +150,11 @@ onMounted(async () => {
     if (auth.token && !auth.user) {
         await auth.fetchUser();
     }
+
+    if (auth.token) {
+        await cart.fetchCart();
+    }
+
     loading.value = false;
 });
 </script>
