@@ -39,6 +39,19 @@ export const useAuthStore = defineStore("auth", () => {
         user.value = null;
         navigateTo("/auth/login");
     }
+    async function updatePassword(data) {
+        const { $axios } = useNuxtApp();
+
+        try {
+            await $axios.put("/shop/user/password", data, {
+                headers: {
+                    Authorization: `Bearer ${token.value}`,
+                },
+            });
+        } catch (error) {
+            throw error;
+        }
+    }
 
     return {
         token,
@@ -49,5 +62,6 @@ export const useAuthStore = defineStore("auth", () => {
         login,
         logout,
         register,
+        updatePassword,
     };
 });
