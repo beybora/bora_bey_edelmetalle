@@ -20,9 +20,10 @@ export const useCartStore = defineStore("cart", {
                         Authorization: `Bearer ${auth.token}`,
                     },
                 });
+
                 this.items = res.data.items;
             } catch (error) {
-                console.error("Error laoading the cart", error);
+                console.error("Error loading the cart", error);
             }
         },
 
@@ -43,7 +44,45 @@ export const useCartStore = defineStore("cart", {
 
                 await this.fetchCart();
             } catch (error) {
-                console.error("Error loading the cart", error);
+                console.error("Error adding to cart", error);
+            }
+        },
+
+        async updateQuantity(itemId, quantity) {
+            const auth = useAuthStore();
+            const { $axios } = useNuxtApp();
+
+            try {
+                await $axios.put(
+                    `/shop/cart/${itemId}`,
+                    { quantity },
+                    {
+                        headers: {
+                            Authorization: `Bearer ${auth.token}`,
+                        },
+                    }
+                );
+
+                await this.fetchCart();
+            } catch (error) {
+                console.error("Error updating quantity", error);
+            }
+        },
+
+        async removeFromCart(itemId) {
+            const auth = useAuthStore();
+            const { $axios } = useNuxtApp();
+
+            try {
+                await $axios.delete(`/shop/cart/${itemId}`, {
+                    headers: {
+                        Authorization: `Bearer ${auth.token}`,
+                    },
+                });
+
+                await this.fetchCart();
+            } catch (error) {
+                console.error("Error removing from cart", error);
             }
         },
     },
