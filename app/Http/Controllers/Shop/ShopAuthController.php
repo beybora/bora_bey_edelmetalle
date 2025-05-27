@@ -70,6 +70,8 @@ class ShopAuthController extends Controller
 
     public function getUser(Request $request)
     {
-        return new UserResource($request->user());
+        $user = $request->user();
+
+        return new UserResource(resource: $user);
     }
 }
