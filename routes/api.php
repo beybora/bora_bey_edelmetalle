@@ -1,10 +1,13 @@
 <?php
 
+use App\Http\Controllers\Admin\CategoryController;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\Shop\CartController;
 use App\Http\Controllers\Shop\ShopAuthController;
 use App\Http\Controllers\Shop\UserController as ShopUserController;
+use App\Http\Controllers\Admin\CategoryController as AdminCategoryController;
+use App\Http\Controllers\Shop\CategoryController as ShopCategoryController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -16,7 +19,12 @@ use Illuminate\Support\Facades\Route;
 Route::prefix('admin')->middleware(['auth:sanctum', 'admin'])->group(function () {
     Route::get('/user', [AuthController::class, 'getUser']);
     Route::post('/logout', [AuthController::class, 'logout']);
+
+    // Produkte
     Route::resource('/products', ProductController::class);
+
+    // Kategorien
+    Route::apiResource('/categories', AdminCategoryController::class);
 });
 
 /*
@@ -30,6 +38,10 @@ Route::prefix('shop')->group(function () {
 
     // Öffentliche Produktliste
     Route::get('/products', [ProductController::class, 'index']);
+    Route::get('/products/{product}', [ProductController::class, 'show']);
+
+    // Kategorien öffentlich
+    Route::get('/categories', [CategoryController::class, 'index']);
 
     /*
     |--------------------------------------------------------------------------
