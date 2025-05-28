@@ -28,11 +28,11 @@
         </router-link>
 
         <router-link
-            :to="{ name: 'app.reports' }"
+            :to="{ name: 'app.categories' }"
             class="flex items-center py-1 px-2 rounded hover:bg-black/30"
         >
             <ChartBarIcon class="h-5 w-5" />
-            <span v-if="isOpen" class="ml-2">Reports</span>
+            <span v-if="isOpen" class="ml-2">Categories</span>
         </router-link>
     </div>
 </template>
