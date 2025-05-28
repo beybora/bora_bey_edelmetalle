@@ -16,15 +16,21 @@ use Illuminate\Support\Facades\Route;
 |--------------------------------------------------------------------------
 */
 
-Route::prefix('admin')->middleware(['auth:sanctum', 'admin'])->group(function () {
-    Route::get('/user', [AuthController::class, 'getUser']);
-    Route::post('/logout', [AuthController::class, 'logout']);
+Route::prefix('admin')->group(function () {
+    // Öffentliche Admin-Routen (Login)
+    Route::post('/login', [AuthController::class, 'login']);
 
-    // Produkte
-    Route::resource('/products', ProductController::class);
+    //Geschützte Admin-Routen
+    Route::middleware(['auth:sanctum', 'admin'])->group(function () {
+        Route::get('/user', [AuthController::class, 'getUser']);
+        Route::post('/logout', [AuthController::class, 'logout']);
 
-    // Kategorien
-    Route::apiResource('/categories', AdminCategoryController::class);
+        // Produkte
+        Route::resource('/products', ProductController::class);
+
+        // Kategorien
+        Route::apiResource('/categories', AdminCategoryController::class);
+    });
 });
 
 /*
@@ -41,7 +47,7 @@ Route::prefix('shop')->group(function () {
     Route::get('/products/{product}', [ProductController::class, 'show']);
 
     // Kategorien öffentlich
-    Route::get('/categories', [CategoryController::class, 'index']);
+    Route::get('/categories', [ShopCategoryController::class, 'index']);
 
     /*
     |--------------------------------------------------------------------------
