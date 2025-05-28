@@ -1,6 +1,7 @@
 import { createStore } from "vuex";
 import * as actions from "./actions";
 import * as mutations from "./mutations";
+import * as getters from "./getters";
 
 const store = createStore({
     state: {
@@ -12,9 +13,12 @@ const store = createStore({
             loading: false,
             data: [],
         },
+        categories: {
+            loading: false,
+            data: [],
+        },
     },
-
-    getters: {},
+    getters: getters,
     actions: actions,
     mutations: mutations,
 });

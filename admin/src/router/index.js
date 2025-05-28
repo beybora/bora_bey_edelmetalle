@@ -9,6 +9,7 @@ import ResetPassword from "../views/ResetPassword.vue";
 import AppLayout from "../components/AppLayout.vue";
 import NotFound from "../views/NotFound.vue";
 import store from "../store/index.js";
+import Categories from "../views/Categories.vue";
 
 const routes = [
     {
@@ -33,6 +34,11 @@ const routes = [
                 path: "users",
                 name: "app.users",
                 component: Users,
+            },
+            {
+                path: "categories",
+                name: "app.categories",
+                component: Categories,
             },
             {
                 path: "reports",
