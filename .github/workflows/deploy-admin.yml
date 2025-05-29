@@ -1,0 +1,81 @@
+name: Deploy Admin Frontend
+
+on:
+  workflow_dispatch:
+
+jobs:
+  deploy:
+    name: Deploy Vue Admin App
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Set up SSH
+        uses: webfactory/ssh-agent@v0.7.0
+        with:
+          ssh-private-key: ${{ secrets.SSH_KEY }}
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: '18' # oder deine bevorzugte Version
+
+      - name: Build Admin App
+        working-directory: ./admin
+        run: |
+          npm ci
+          npm run build
+
+      - name: Deploy dist folder to server
+        run: |
+          rsync -avz \
+            -e "ssh -o StrictHostKeyChecking=no" \
+            ./admin/dist/ ${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST }}:${{ secrets.ADMIN_DEPLOY_PATH }}
+
+      - name: Set ownership
+        run: |
+          ssh -o StrictHostKeyChecking=no ${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST }} << 'EOF'
+            sudo chown -R www-data:www-data ${{ secrets.ADMIN_DEPLOY_PATH }}
+          EOF
+name: Deploy Admin Frontend
+
+on:
+  workflow_dispatch:
+
+jobs:
+  deploy:
+    name: Deploy Vue Admin App
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Set up SSH
+        uses: webfactory/ssh-agent@v0.7.0
+        with:
+          ssh-private-key: ${{ secrets.SSH_KEY }}
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: '20'
+      - name: Build Admin App
+        working-directory: ./admin
+        run: |
+          npm ci
+          npm run build
+
+      - name: Deploy dist folder to server
+        run: |
+          rsync -avz \
+            -e "ssh -o StrictHostKeyChecking=no" \
+            ./admin/dist/ ${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST }}:${{ secrets.ADMIN_DEPLOY_PATH }}
+
+      - name: Set ownership
+        run: |
+          ssh -o StrictHostKeyChecking=no ${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST }} << 'EOF'
+            sudo chown -R www-data:www-data ${{ secrets.ADMIN_DEPLOY_PATH }}
+          EOF
