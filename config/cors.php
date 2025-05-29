@@ -18,8 +18,12 @@ return [
     'allowed_methods' => ['*'],
 
     'allowed_origins' => [
-        'http://localhost:3001', // Dein Nuxt-Frontend
+        'http://localhost:3001',
+        'http://localhost:5173',
+        'https://admin.beylabs.de',
+        'https://beylabs.de',
     ],
+
 
     'allowed_origins_patterns' => [],
 
