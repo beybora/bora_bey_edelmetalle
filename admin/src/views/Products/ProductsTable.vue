@@ -50,16 +50,9 @@
                     <td class="px-4 py-2">{{ product.id }}</td>
                     <td class="px-4 py-2">
                         <img
-                            v-if="product.image"
                             class="w-12 h-12 object-cover"
                             :src="product.image"
                             :alt="product.title"
-                        />
-                        <img
-                            v-else
-                            class="w-12 h-12 object-cover"
-                            src="../../assets/noimage.png"
-                            alt="No image"
                         />
                     </td>
                     <td class="px-4 py-2 truncate max-w-[200px]">
