@@ -1,0 +1,38 @@
+name: Deploy Nuxt Shop
+
+on:
+  workflow_dispatch:
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Set up SSH
+        uses: webfactory/ssh-agent@v0.7.0
+        with:
+          ssh-private-key: ${{ secrets.SSH_KEY }}
+
+      - name: Sync Shop-Frontend to Server
+        run: |
+          rsync -avz \
+            -e "ssh -o StrictHostKeyChecking=no" \
+            ./shop-frontend/ ${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST }}:${{ secrets.SHOP_DEPLOY_PATH }}
+
+      - name: Write .env file on server
+        run: |
+          ssh -o StrictHostKeyChecking=no ${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST }} << 'EOF'
+            echo "${{ secrets.ENV_CONTENT }}" > ${{ secrets.SHOP_DEPLOY_PATH }}/.env
+          EOF
+
+      - name: Install dependencies, build & restart Nuxt via PM2
+        run: |
+          ssh -o StrictHostKeyChecking=no ${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST }} << 'EOF'
+            cd ${{ secrets.SHOP_DEPLOY_PATH }}
+            npm install
+            npm run build
+            pm2 restart shop || pm2 start .output/server/index.mjs --name shop
+          EOF
