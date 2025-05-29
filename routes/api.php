@@ -70,3 +70,9 @@ Route::prefix('shop')->group(function () {
         Route::delete('/cart/{id}', [CartController::class, 'destroy']);
     });
 });
+
+
+// Globa Healthcheck
+Route::get('/ping', function () {
+    return response()->json(['status' => 'ok']);
+});
