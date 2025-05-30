@@ -8,6 +8,7 @@ use App\Http\Controllers\Shop\ShopAuthController;
 use App\Http\Controllers\Shop\UserController as ShopUserController;
 use App\Http\Controllers\Admin\CategoryController as AdminCategoryController;
 use App\Http\Controllers\Shop\CategoryController as ShopCategoryController;
+use App\Http\Controllers\Shop\OrderController;
 use App\Http\Controllers\Shop\ProductController as ShopProductController;
 use Illuminate\Support\Facades\Route;
 
@@ -72,6 +73,12 @@ Route::prefix('shop')->group(function () {
         Route::post('/cart', [CartController::class, 'store']);
         Route::put('/cart/{id}', [CartController::class, 'update']);
         Route::delete('/cart/{id}', [CartController::class, 'destroy']);
+
+        // Checkout
+        Route::post('/checkout', [OrderController::class, 'store']);
+        Route::get('/orders', [OrderController::class, 'index']);
+        Route::get('/orders/{id}', [OrderController::class, 'show']);
+        Route::delete('/orders/{id}', [OrderController::class, 'cancel']);
     });
 });
 
