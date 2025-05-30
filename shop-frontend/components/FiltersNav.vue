@@ -40,6 +40,7 @@
 import { ref, computed, onMounted } from "vue";
 import { useCategoriesStore } from "~/stores/categories";
 import { useProductsStore } from "~/stores/products";
+import { useRouter, useRoute } from "vue-router";
 
 const props = defineProps({
     isMobile: Boolean,
@@ -47,6 +48,8 @@ const props = defineProps({
 
 const categoryStore = useCategoriesStore();
 const productStore = useProductsStore();
+const router = useRouter();
+const route = useRoute();
 
 const categories = computed(() => categoryStore.items);
 const selected = computed(() => categoryStore.selectedCategorySlug);
@@ -55,11 +58,19 @@ const searchInput = ref(categoryStore.search || "");
 function selectCategory(slug) {
     categoryStore.selectCategory(slug);
     productStore.fetchAll();
+
+    if (route.name !== "index") {
+        router.push({ name: "index" });
+    }
 }
 
 function triggerSearch() {
     categoryStore.setSearch(searchInput.value);
     productStore.fetchAll();
+
+    if (route.name !== "index") {
+        router.push({ name: "index" });
+    }
 }
 
 function linkClass(slug) {

@@ -7,11 +7,21 @@
             <svg
                 class="animate-spin h-10 w-10 text-gray-500"
                 xmlns="http://www.w3.org/2000/svg"
+                fill="none"
                 viewBox="0 0 24 24"
             >
+                <circle
+                    class="opacity-25"
+                    cx="12"
+                    cy="12"
+                    r="10"
+                    stroke="currentColor"
+                    stroke-width="4"
+                />
                 <path
+                    class="opacity-75"
                     fill="currentColor"
-                    d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"
+                    d="M4 12a8 8 0 018-8v4l3-3-3-3v4a8 8 0 018 8h-4l3 3 3-3h-4a8 8 0 01-8 8v-4l-3 3 3 3v-4a8 8 0 01-8-8z"
                 />
             </svg>
         </div>
@@ -20,7 +30,6 @@
             <Disclosure as="nav" class="bg-gray-800" v-slot="{ open }">
                 <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
                     <div class="flex h-16 items-center justify-between">
-                        <!-- Logo -->
                         <div class="flex items-center">
                             <NuxtLink
                                 to="/"
@@ -55,7 +64,7 @@
                                 </span>
                             </NuxtLink>
 
-                            <div>
+                            <div class="block">
                                 <Menu as="div" class="relative">
                                     <MenuButton
                                         class="flex items-center text-sm text-white"
@@ -63,7 +72,7 @@
                                         <UserIcon class="h-5 w-5" />
                                     </MenuButton>
                                     <MenuItems
-                                        class="absolute right-0 mt-2 w-40 bg-white py-1 shadow-lg ring-1 ring-black/5 z-50"
+                                        class="absolute right-0 mt-2 w-40 bg-white py-1 shadow-lg ring-1 ring-black/5"
                                     >
                                         <template v-if="isLoggedIn">
                                             <MenuItem>
@@ -105,7 +114,7 @@
                         v-if="showMobileSearch"
                         class="lg:hidden px-4 pb-4 bg-gray-800"
                     >
-                        <FiltersNav :isMobile="true" />
+                        <FiltersNav isMobile />
                     </div>
                 </transition>
             </Disclosure>
@@ -130,13 +139,18 @@ import {
     AdjustmentsHorizontalIcon,
     UserIcon,
 } from "@heroicons/vue/24/outline";
-import { ref, computed, onMounted } from "vue";
+import { ref, computed, onMounted, watch } from "vue";
 import { useAuthStore } from "~/stores/auth";
 import { useCartStore } from "~/stores/cart";
+import { useCategoriesStore } from "~/stores/categories";
+import { useRoute } from "vue-router";
 import FiltersNav from "~/components/FiltersNav.vue";
 
 const auth = useAuthStore();
 const cart = useCartStore();
+const categoryStore = useCategoriesStore();
+const route = useRoute();
+
 const loading = ref(true);
 const showMobileSearch = ref(false);
 
@@ -152,6 +166,15 @@ function logout() {
 function toggleMobileSearch() {
     showMobileSearch.value = !showMobileSearch.value;
 }
+
+watch(
+    () => route.name,
+    (name) => {
+        if (name !== "index") {
+            categoryStore.resetFilters();
+        }
+    }
+);
 
 onMounted(async () => {
     if (auth.token && !auth.user) await auth.fetchUser();
