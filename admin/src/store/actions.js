@@ -82,3 +82,9 @@ export function deleteCategory({ commit }, categoryId) {
         commit("deleteCategoryFromState", categoryId);
     });
 }
+
+export function getShopUsers({ commit }) {
+    return axiosClient.get("/admin/shop-users").then(({ data }) => {
+        commit("setShopUsers", data);
+    });
+}

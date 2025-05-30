@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Shop;
 
 use App\Http\Controllers\Controller;
+use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Validation\Rules\Password;
@@ -64,5 +65,14 @@ class UserController extends Controller
         return response()->json([
             'message' => 'Password successfully updated.',
         ]);
+    }
+
+    public function getShopUsers()
+    {
+        $users = User::where('is_admin', false)
+            ->withCount('cartItems')
+            ->get(['id', 'name', 'email']);
+
+        return response()->json($users);
     }
 }

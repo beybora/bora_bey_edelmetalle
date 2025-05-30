@@ -29,6 +29,8 @@ Route::prefix('admin')->group(function () {
         // Produkte
         Route::resource('/products', ProductController::class);
 
+        Route::get('/shop-users', [ShopUserController::class, 'getShopUsers']);
+
         // Kategorien
         Route::apiResource('/categories', AdminCategoryController::class);
         Route::post('/admin/categories/sort', [CategoryController::class, 'sort']);

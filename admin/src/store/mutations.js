@@ -54,3 +54,11 @@ export function deleteCategoryFromState(state, categoryId) {
         (cat) => cat.id !== categoryId
     );
 }
+
+export function setShopUsers(state, users) {
+    state.users.data = users;
+}
+
+export function setUsersLoading(state, loading) {
+    state.users.loading = loading;
+}
