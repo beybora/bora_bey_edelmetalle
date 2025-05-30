@@ -5,6 +5,7 @@
         </h1>
 
         <div class="grid grid-cols-1 lg:grid-cols-12 gap-x-8 gap-y-10">
+            <!-- Cart Items -->
             <div class="lg:col-span-8">
                 <ul role="list" class="divide-y divide-gray-200">
                     <li
@@ -74,11 +75,13 @@
                 </ul>
             </div>
 
+            <!-- Summary -->
             <div class="lg:col-span-4">
                 <div class="bg-gray-50 rounded-lg shadow p-6 space-y-6">
                     <h2 class="text-lg font-medium text-gray-900">
                         Order summary
                     </h2>
+
                     <div class="space-y-4 text-sm text-gray-700">
                         <div class="flex justify-between">
                             <span>Subtotal</span>
@@ -99,9 +102,11 @@
 
                     <button
                         class="w-full bg-indigo-600 text-white py-3 rounded-md hover:bg-indigo-700 text-base font-medium"
+                        @click="checkout"
                     >
                         Checkout
                     </button>
+
                     <div class="text-sm text-center text-gray-500">
                         or
                         <NuxtLink
@@ -119,9 +124,13 @@
 
 <script setup>
 import { useCartStore } from "~/stores/cart";
+import { useOrdersStore } from "~/stores/orders";
 import { computed, onMounted } from "vue";
+import { useRouter } from "vue-router";
 
 const cart = useCartStore();
+const orders = useOrdersStore();
+const router = useRouter();
 
 onMounted(() => {
     cart.fetchCart();
@@ -142,5 +151,26 @@ function updateQuantity(id, quantity) {
 
 function remove(id) {
     cart.removeFromCart(id);
+}
+
+async function checkout() {
+    const orderData = {
+        first_name: "Max",
+        last_name: "Mustermann",
+        phone: "0123456789",
+        address1: "Musterstraße 1",
+        address2: "",
+        city: "Berlin",
+        state: "BE",
+        zipcode: "10115",
+        country_code: "DE",
+    };
+
+    try {
+        const res = await orders.placeOrder(orderData);
+        router.push(`/order-details?order_id=${res.order_id}`);
+    } catch (e) {
+        console.error("Checkout failed", e);
+    }
 }
 </script>
