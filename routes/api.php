@@ -8,6 +8,7 @@ use App\Http\Controllers\Shop\ShopAuthController;
 use App\Http\Controllers\Shop\UserController as ShopUserController;
 use App\Http\Controllers\Admin\CategoryController as AdminCategoryController;
 use App\Http\Controllers\Shop\CategoryController as ShopCategoryController;
+use App\Http\Controllers\Shop\ProductController as ShopProductController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -42,9 +43,9 @@ Route::prefix('shop')->group(function () {
     Route::post('/login', [ShopAuthController::class, 'login']);
     Route::post('/register', [ShopAuthController::class, 'register']);
 
-    // Öffentliche Produktliste
-    Route::get('/products', [ProductController::class, 'index']);
-    Route::get('/products/{product}', [ProductController::class, 'show']);
+    // Produkte
+    Route::get('/products', [ShopProductController::class, 'index']);
+    Route::get('/products/{product}', [ShopProductController::class, 'show']);
 
     // Kategorien öffentlich
     Route::get('/categories', [ShopCategoryController::class, 'index']);
