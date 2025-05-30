@@ -1,4 +1,3 @@
-// ========== USER ==========
 export function setUser(state, user) {
     state.user.data = user;
 }
@@ -12,7 +11,6 @@ export function setToken(state, token) {
     }
 }
 
-// ========== PRODUCTS ==========
 export function setProducts(state, products) {
     state.products.data = products;
 }
@@ -43,22 +41,12 @@ export function deleteProduct(state, productId) {
     }
 }
 
-// ========== CATEGORIES ==========
 export function setCategories(state, categories) {
     state.categories.data = categories;
 }
 
 export function setCategoriesLoading(state, loading) {
     state.categories.loading = loading;
-}
-
-export function updateCategoryInState(state, updatedCategory) {
-    const index = state.categories.data.findIndex(
-        (cat) => cat.id === updatedCategory.id
-    );
-    if (index !== -1) {
-        state.categories.data[index] = updatedCategory;
-    }
 }
 
 export function deleteCategoryFromState(state, categoryId) {

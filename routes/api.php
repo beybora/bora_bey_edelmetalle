@@ -31,6 +31,7 @@ Route::prefix('admin')->group(function () {
 
         // Kategorien
         Route::apiResource('/categories', AdminCategoryController::class);
+        Route::post('/admin/categories/sort', [CategoryController::class, 'sort']);
     });
 });
 
