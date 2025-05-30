@@ -25,5 +25,10 @@ export const useCategoriesStore = defineStore("categories", {
         setSearch(term) {
             this.search = term;
         },
+
+        resetFilters() {
+            this.selectedCategorySlug = null;
+            this.search = "";
+        },
     },
 });
