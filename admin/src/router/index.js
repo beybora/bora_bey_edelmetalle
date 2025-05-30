@@ -72,9 +72,13 @@ const routes = [
         component: ResetPassword,
     },
     {
-        path: "/:pathMatch(.*)",
-        name: "notFound",
-        component: NotFound,
+        path: "/:pathMatch(.*)*",
+        redirect: (to) => {
+            const isAuthenticated = store.state.user.token;
+            return isAuthenticated
+                ? { name: "app.dashboard" }
+                : { name: "login" };
+        },
     },
 ];
 
@@ -84,9 +88,11 @@ const router = createRouter({
 });
 
 router.beforeEach((to, from, next) => {
-    if (to.meta.requiresAuth && !store.state.user.token) {
+    const isAuthenticated = store.state.user.token;
+
+    if (to.meta.requiresAuth && !isAuthenticated) {
         next({ name: "login" });
-    } else if (to.meta.requiresUnauth && store.state.user.token) {
+    } else if (to.meta.requiresUnauth && isAuthenticated) {
         next({ name: "app.dashboard" });
     } else {
         next();
