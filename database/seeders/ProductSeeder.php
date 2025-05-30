@@ -3,18 +3,21 @@
 namespace Database\Seeders;
 
 use App\Models\Product;
-use Illuminate\Database\Console\Seeds\WithoutModelEvents;
+use App\Models\Category;
 use Illuminate\Database\Seeder;
 
 class ProductSeeder extends Seeder
 {
-    /**
-     * Run the database seeds.
-     */
     public function run(): void
     {
+        $categories = Category::all();
+
         Product::factory()
             ->count(20)
-            ->create();
+            ->make()
+            ->each(function ($product) use ($categories) {
+                $product->category_id = $categories->random()->id ?? null;
+                $product->save();
+            });
     }
 }
