@@ -11,6 +11,27 @@ use Illuminate\Support\Facades\Hash;
 
 class ShopAuthController extends Controller
 {
+    public function register(Request $request)
+    {
+        $data = $request->validate([
+            'name' => ['required', 'string', 'max:255'],
+            'email' => ['required', 'email', 'unique:users,email'],
+            'password' => ['required', 'confirmed'],
+        ]);
+
+        $data['password'] = Hash::make($data['password']);
+
+        $user = User::create($data);
+
+        $token = $user->createToken('shop')->plainTextToken;
+
+        return response([
+            'message' => 'Registrierung erfolgreich',
+            'token' => $token,
+            'user' => new UserResource($user),
+        ], 201);
+    }
+
     public function login(Request $request)
     {
         $credentials = $request->validate([
@@ -42,6 +63,7 @@ class ShopAuthController extends Controller
             'user' => new UserResource($user),
         ]);
     }
+
 
     public function logout()
     {
