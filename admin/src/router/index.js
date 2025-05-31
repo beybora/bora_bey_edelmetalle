@@ -4,8 +4,6 @@ import Users from "../views/Users.vue";
 import Reports from "../views/Reports.vue";
 import Products from "../views/Products/Products.vue";
 import Login from "../views/Login.vue";
-import RequestPassword from "../views/RequestPassword.vue";
-import ResetPassword from "../views/ResetPassword.vue";
 import AppLayout from "../components/AppLayout.vue";
 import NotFound from "../views/NotFound.vue";
 import store from "../store/index.js";
@@ -54,22 +52,6 @@ const routes = [
             requiresUnauth: true,
         },
         component: Login,
-    },
-    {
-        path: "/request-password",
-        name: "requestPassword",
-        meta: {
-            requiresUnauth: true,
-        },
-        component: RequestPassword,
-    },
-    {
-        path: "/reset-password",
-        name: "resetPassword",
-        meta: {
-            requiresUnauth: true,
-        },
-        component: ResetPassword,
     },
     {
         path: "/:pathMatch(.*)*",
