@@ -1,8 +1,7 @@
 <template>
     <div class="p-6">
-        <h1 class="text-2xl font-bold mb-4">Kategorien verwalten</h1>
+        <h1 class="text-2xl font-bold mb-4">Manage Categories</h1>
 
-        <!-- Neue Kategorie -->
         <form
             @submit.prevent="createCategory"
             class="flex flex-col sm:flex-row sm:items-center gap-2 mb-6"
@@ -24,12 +23,11 @@
                 type="submit"
                 class="bg-indigo-600 text-white px-4 py-2 rounded hover:bg-indigo-700"
             >
-                Erstellen
+                Create
             </button>
         </form>
 
-        <!-- Kategorienliste -->
-        <h2 class="text-xl font-semibold mb-2">Kategorien</h2>
+        <h2 class="text-xl font-semibold mb-2">Categories</h2>
         <div
             v-for="(category, index) in categories"
             :key="category.id"
@@ -38,12 +36,14 @@
             <span class="w-10 text-center">{{ index + 1 }}</span>
             <span class="font-semibold">{{ category.name }}</span>
             <span class="text-gray-500">/{{ category.slug }}</span>
-            <span class="text-green-700 font-medium">In Navigation</span>
+            <span class="text-green-700 font-medium"
+                >Visible in navigation</span
+            >
             <button
                 @click="deleteCategory(category.id)"
                 class="text-red-600 hover:underline"
             >
-                Löschen
+                Delete
             </button>
         </div>
     </div>
@@ -74,7 +74,7 @@ const createCategory = async () => {
 };
 
 const deleteCategory = async (id) => {
-    if (!confirm("Wirklich löschen?")) return;
+    if (!confirm("Are you sure you want to delete this category?")) return;
     await store.dispatch("deleteCategory", id);
 };
 </script>

@@ -1,14 +1,14 @@
 <template>
     <div class="p-6">
-        <h1 class="text-2xl font-bold mb-4">Shop-User</h1>
+        <h1 class="text-2xl font-bold mb-4">Shop Users</h1>
         <table class="table-auto w-full border">
             <thead>
                 <tr class="bg-gray-100 text-left">
                     <th class="p-2 border">#</th>
                     <th class="p-2 border">Name</th>
-                    <th class="p-2 border">E-Mail</th>
-                    <th class="p-2 border">Warenkorb</th>
-                    <th class="p-2 border">Bestellungen</th>
+                    <th class="p-2 border">Email</th>
+                    <th class="p-2 border">Cart</th>
+                    <th class="p-2 border">Orders</th>
                 </tr>
             </thead>
             <tbody>
@@ -16,8 +16,24 @@
                     <td class="p-2 border">{{ index + 1 }}</td>
                     <td class="p-2 border">{{ user.name }}</td>
                     <td class="p-2 border">{{ user.email }}</td>
-                    <td class="p-2 border">{{ user.cart_items_count }}</td>
-                    <td class="p-2 border text-gray-400 italic">–</td>
+                    <td class="p-2 border">
+                        <span
+                            :class="
+                                user.cart_items_count > 0
+                                    ? 'text-green-700 font-medium'
+                                    : 'text-gray-500 italic'
+                            "
+                        >
+                            {{
+                                user.cart_items_count > 0
+                                    ? "Has active items in cart"
+                                    : "Empty"
+                            }}
+                        </span>
+                    </td>
+                    <td class="p-2 border">
+                        {{ user.orders_count }}
+                    </td>
                 </tr>
             </tbody>
         </table>
