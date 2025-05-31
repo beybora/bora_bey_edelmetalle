@@ -1,5 +1,10 @@
 <template>
-    <AuthLayout title="Login to your account">
+    <AuthLayout title="Login">
+        <div class="bg-gray-300 text-sm text-gray-700 p-4 rounded mb-6">
+            Login:<br />
+            <strong>admin@example.com</strong> <br />
+            <strong>password</strong>
+        </div>
         <form class="space-y-6" @submit.prevent="login" method="POST">
             <div
                 v-if="errorMsg"
@@ -32,16 +37,8 @@
                     <label
                         for="password"
                         class="block text-sm/6 font-medium text-gray-900"
-                        >Password</label
+                        >password</label
                     >
-                    <div class="text-sm">
-                        <router-link
-                            :to="{ name: 'requestPassword' }"
-                            class="font-semibold text-indigo-600 hover:text-indigo-500"
-                        >
-                            Forgot password?
-                        </router-link>
-                    </div>
                 </div>
                 <div class="mt-2">
                     <input
