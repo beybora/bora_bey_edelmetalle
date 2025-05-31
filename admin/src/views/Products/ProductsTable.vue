@@ -73,22 +73,6 @@
                                 <div class="px-1 py-1">
                                     <MenuItem v-slot="{ active }">
                                         <button
-                                            @click="editProduct(product)"
-                                            :class="[
-                                                active
-                                                    ? 'bg-indigo-500 text-white'
-                                                    : 'text-gray-900',
-                                                'group flex w-full items-center px-2 py-2 text-sm',
-                                            ]"
-                                        >
-                                            <PencilSquareIcon
-                                                class="mr-2 h-5 w-5"
-                                            />
-                                            Edit
-                                        </button>
-                                    </MenuItem>
-                                    <MenuItem v-slot="{ active }">
-                                        <button
                                             @click="deleteProduct(product.id)"
                                             :class="[
                                                 active
