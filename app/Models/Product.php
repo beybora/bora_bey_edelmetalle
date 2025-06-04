@@ -19,7 +19,7 @@ class Product extends Model
             ->saveSlugsTo('slug');
     }
 
-    protected $fillable = ['title', 'description', 'price'];
+    protected $fillable = ['title', 'description', 'price', 'image', 'category_id'];
 
     public function category()
     {
