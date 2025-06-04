@@ -62,3 +62,11 @@ export function setShopUsers(state, users) {
 export function setUsersLoading(state, loading) {
     state.users.loading = loading;
 }
+
+export function setOrders(state, orders) {
+    state.orders.data = orders;
+}
+
+export function setOrdersLoading(state, loading) {
+    state.orders.loading = loading;
+}

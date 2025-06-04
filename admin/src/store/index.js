@@ -21,6 +21,10 @@ const store = createStore({
             loading: false,
             data: [],
         },
+        orders: {
+            loading: false,
+            data: [],
+        },
     },
     getters: getters,
     actions: actions,

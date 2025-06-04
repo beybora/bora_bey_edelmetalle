@@ -88,3 +88,16 @@ export function getShopUsers({ commit }) {
         commit("setShopUsers", data);
     });
 }
+
+export function getOrders({ commit }) {
+    commit("setOrdersLoading", true);
+    return axiosClient
+        .get("/admin/orders")
+        .then(({ data }) => {
+            commit("setOrders", data);
+            return data;
+        })
+        .finally(() => {
+            commit("setOrdersLoading", false);
+        });
+}

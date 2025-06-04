@@ -8,6 +8,7 @@ import AppLayout from "../components/AppLayout.vue";
 import NotFound from "../views/NotFound.vue";
 import store from "../store/index.js";
 import Categories from "../views/Categories.vue";
+import Orders from "../views/Orders.vue";
 
 const routes = [
     {
@@ -42,6 +43,11 @@ const routes = [
                 path: "reports",
                 name: "app.reports",
                 component: Reports,
+            },
+            {
+                path: "orders",
+                name: "app.orders",
+                component: Orders,
             },
         ],
     },
