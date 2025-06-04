@@ -56,6 +56,18 @@
                                     label="Price"
                                     class="mb-4"
                                 />
+                                <CustomInput
+                                    v-model="product.image"
+                                    label="Image URL"
+                                    class="mb-4"
+                                />
+                                <div class="mb-4">
+                                    <label class="block text-sm font-medium text-gray-700 mb-1">Category</label>
+                                    <select v-model="product.category_id" class="w-full border rounded px-3 py-2">
+                                        <option value="">No category</option>
+                                        <option v-for="cat in categories" :key="cat.id" :value="cat.id">{{ cat.name }}</option>
+                                    </select>
+                                </div>
 
                                 <div class="flex justify-end space-x-2 mt-6">
                                     <button
@@ -90,7 +102,7 @@
 </template>
 
 <script setup>
-import { ref, defineProps, defineEmits, watch } from "vue";
+import { ref, defineProps, defineEmits, watch, onMounted, computed } from "vue";
 import {
     Dialog,
     DialogPanel,
@@ -110,6 +122,14 @@ const props = defineProps({
 
 const loading = ref(false);
 const product = ref({ ...props.product });
+
+const categories = computed(() => store.state.categories.data);
+
+onMounted(() => {
+    if (!store.state.categories.data.length) {
+        store.dispatch("getCategories");
+    }
+});
 
 watch(
     () => props.product,
