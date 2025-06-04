@@ -70,8 +70,12 @@ class UserController extends Controller
     public function getShopUsers()
     {
         $users = User::where('is_admin', false)
-            ->withCount('cartItems')
+            ->withCount('orders')
             ->get(['id', 'name', 'email']);
+
+        foreach ($users as $user) {
+            $user->cart_items_count = $user->cartItems()->sum('quantity');
+        }
 
         return response()->json($users);
     }
