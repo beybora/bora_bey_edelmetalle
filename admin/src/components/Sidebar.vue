@@ -3,7 +3,7 @@
         class="bg-indigo-700 text-gray-300 w-16 py-4 px-2 space-y-2 rounded-r-sm shadow-lg overflow-hidden transition-all duration-300"
     >
         <router-link
-            :to="{ name: 'app.dashboard' }"
+             :to="{ name: 'app.orders' }"
             class="flex items-center py-1 px-2 rounded hover:bg-black/30"
         >
             <HomeIcon class="h-5 w-5" />
