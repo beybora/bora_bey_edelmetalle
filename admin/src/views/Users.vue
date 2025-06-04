@@ -26,8 +26,8 @@
                         >
                             {{
                                 user.cart_items_count > 0
-                                    ? "Has active items in cart"
-                                    : "Empty"
+                                    ? user.cart_items_count + (user.cart_items_count === 1 ? ' product in cart' : ' products in cart')
+                                    : 'Empty'
                             }}
                         </span>
                     </td>
