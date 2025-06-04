@@ -35,6 +35,10 @@ Route::prefix('admin')->group(function () {
         // Kategorien
         Route::apiResource('/categories', AdminCategoryController::class);
         Route::post('/admin/categories/sort', [CategoryController::class, 'sort']);
+
+        // Admin Orders
+        Route::get('/orders', [\App\Http\Controllers\Admin\OrderController::class, 'index']);
+        Route::get('/orders/{id}', [\App\Http\Controllers\Admin\OrderController::class, 'show']);
     });
 });
 
