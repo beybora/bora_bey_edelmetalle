@@ -1,7 +1,6 @@
 <template>
-    <div class="p-6">
+    <div class="bg-white p-4 shadow">
         <h1 class="text-2xl font-bold mb-4">Manage Categories</h1>
-
         <form
             @submit.prevent="createCategory"
             class="flex flex-col sm:flex-row sm:items-center gap-2 mb-6"
@@ -26,26 +25,40 @@
                 Create
             </button>
         </form>
-
-        <h2 class="text-xl font-semibold mb-2">Categories</h2>
-        <div
-            v-for="(category, index) in categories"
-            :key="category.id"
-            class="flex items-center justify-between bg-white p-4 border mb-2"
-        >
-            <span class="w-10 text-center">{{ index + 1 }}</span>
-            <span class="font-semibold">{{ category.name }}</span>
-            <span class="text-gray-500">/{{ category.slug }}</span>
-            <span class="text-green-700 font-medium"
-                >Visible in navigation</span
-            >
-            <button
-                @click="deleteCategory(category.id)"
-                class="text-red-600 hover:underline"
-            >
-                Delete
-            </button>
-        </div>
+        <table class="table-fixed w-full mt-4 border-collapse">
+            <thead>
+                <tr class="text-left">
+                    <th class="w-12 px-4 py-2">#</th>
+                    <th class="w-1/4 px-4 py-2">Name</th>
+                    <th class="w-1/4 px-4 py-2">Slug</th>
+                    <th class="w-1/4 px-4 py-2">Visible in nav</th>
+                    <th class="w-1/4 px-4 py-2">Actions</th>
+                </tr>
+            </thead>
+            <tbody v-if="categories.length > 0">
+                <tr v-for="(category, index) in categories" :key="category.id" class="border-t">
+                    <td class="px-4 py-2">{{ index + 1 }}</td>
+                    <td class="px-4 py-2">{{ category.name }}</td>
+                    <td class="px-4 py-2">{{ category.slug }}</td>
+                    <td class="px-4 py-2 text-green-700 font-medium">Visible in navigation</td>
+                    <td class="px-4 py-2">
+                        <button
+                            @click="deleteCategory(category.id)"
+                            class="text-red-600 hover:underline"
+                        >
+                            Delete
+                        </button>
+                    </td>
+                </tr>
+            </tbody>
+            <tbody v-else>
+                <tr>
+                    <td colspan="5" class="text-center text-gray-500 italic py-6">
+                        No categories found.
+                    </td>
+                </tr>
+            </tbody>
+        </table>
     </div>
 </template>
 

@@ -1,29 +1,24 @@
 <template>
-    <div class="p-6">
+    <div class="bg-white p-4 shadow">
         <h1 class="text-2xl font-bold mb-4">Orders</h1>
-        <table class="table-auto w-full border">
+        <table class="table-fixed w-full mt-4 border-collapse">
             <thead>
-                <tr class="bg-gray-100 text-left">
-                    <th class="p-2 border">#</th>
-                    <th class="p-2 border">Order ID</th>
-                    <th class="p-2 border">Customer</th>
-                    <th class="p-2 border">Status</th>
-                    <th class="p-2 border">Total</th>
-                    <th class="p-2 border">Date</th>
-                    <th class="p-2 border">Actions</th>
+                <tr class="text-left">
+                    <th class="w-12 px-4 py-2">#</th>
+                    <th class="w-24 px-4 py-2">Order ID</th>
+                    <th class="w-1/4 px-4 py-2">Customer</th>
+                    <th class="w-24 px-4 py-2">Status</th>
+                    <th class="w-24 px-4 py-2">Total</th>
+                    <th class="w-40 px-4 py-2">Date</th>
+                    <th class="w-16 px-4 py-2 text-right">Actions</th>
                 </tr>
             </thead>
-            <tbody>
-                <tr v-if="orders.length === 0">
-                    <td colspan="7" class="text-center text-gray-500 italic py-6">
-                        No orders found.
-                    </td>
-                </tr>
-                <tr v-for="(order, index) in orders" :key="order.id">
-                    <td class="p-2 border">{{ index + 1 }}</td>
-                    <td class="p-2 border">{{ order.id }}</td>
-                    <td class="p-2 border">{{ order.user && order.user.name ? order.user.name : 'Unknown' }}</td>
-                    <td class="p-2 border">
+            <tbody v-if="orders.length > 0">
+                <tr v-for="(order, index) in orders" :key="order.id" class="border-t">
+                    <td class="px-4 py-2">{{ index + 1 }}</td>
+                    <td class="px-4 py-2">{{ order.id }}</td>
+                    <td class="px-4 py-2">{{ order.user && order.user.name ? order.user.name : 'Unknown' }}</td>
+                    <td class="px-4 py-2">
                         <select
                             v-model="order.status"
                             @change="updateStatus(order)"
@@ -37,15 +32,22 @@
                             <option value="cancelled">Cancelled</option>
                         </select>
                     </td>
-                    <td class="p-2 border">{{ Number(order.total_price).toFixed(2) }} €</td>
-                    <td class="p-2 border">{{ formatDate(order.created_at) }}</td>
-                    <td class="p-2 border">
+                    <td class="px-4 py-2">{{ Number(order.total_price).toFixed(2) }} €</td>
+                    <td class="px-4 py-2">{{ formatDate(order.created_at) }}</td>
+                    <td class="px-4 py-2 text-right">
                         <button
                             @click="viewOrderDetails(order)"
                             class="text-indigo-600 hover:text-indigo-800"
                         >
                             View Details
                         </button>
+                    </td>
+                </tr>
+            </tbody>
+            <tbody v-else>
+                <tr>
+                    <td colspan="7" class="text-center text-gray-500 italic py-6">
+                        No orders found.
                     </td>
                 </tr>
             </tbody>
