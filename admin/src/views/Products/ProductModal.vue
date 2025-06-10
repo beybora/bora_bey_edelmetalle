@@ -38,7 +38,12 @@
                                         : "Create new product"
                                 }}
                             </DialogTitle>
-
+                            <div v-if="errorMsg" class="mb-2 p-3 bg-red-100 text-red-700 rounded">
+                                {{ errorMsg }}
+                            </div>
+                            <ul v-if="errorDetails.length" class="mb-4 list-disc list-inside text-red-600 text-sm">
+                                <li v-for="(err, idx) in errorDetails" :key="idx">{{ err }}</li>
+                            </ul>
                             <form @submit.prevent="onSubmit">
                                 <CustomInput
                                     v-model="product.title"
@@ -122,6 +127,8 @@ const props = defineProps({
 
 const loading = ref(false);
 const product = ref({ ...props.product });
+const errorMsg = ref("");
+const errorDetails = ref([]);
 
 const categories = computed(() => store.state.categories.data);
 
@@ -140,25 +147,35 @@ watch(
 
 function closeModal() {
     emit("update:modelValue", false);
+    errorMsg.value = "";
+    errorDetails.value = [];
 }
 
 function onCancel() {
     closeModal();
     product.value = { ...props.product };
+    errorMsg.value = "";
+    errorDetails.value = [];
 }
 
 async function onSubmit() {
     loading.value = true;
-
+    errorMsg.value = "";
+    errorDetails.value = [];
     const action = product.value.id ? "updateProduct" : "createProduct";
-
-    const response = await store.dispatch(action, product.value);
-
-    loading.value = false;
-
-    if (response && response.data.id) {
-        emit("updated");
-        onCancel();
+    try {
+        const response = await store.dispatch(action, product.value);
+        if (response && response.data && response.data.id) {
+            emit("updated");
+            onCancel();
+        }
+    } catch (err) {
+        errorMsg.value = err.response?.data?.message || "Unbekannter Fehler beim Speichern.";
+        if (err.response?.data?.errors) {
+            errorDetails.value = Object.values(err.response.data.errors).flat();
+        }
+    } finally {
+        loading.value = false;
     }
 }
 </script>
