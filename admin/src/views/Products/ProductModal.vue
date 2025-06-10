@@ -102,7 +102,7 @@
 </template>
 
 <script setup>
-import { ref, defineProps, defineEmits, watch, onMounted, computed } from "vue";
+import { ref, watch, onMounted, computed } from "vue";
 import {
     Dialog,
     DialogPanel,
