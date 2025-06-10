@@ -140,3 +140,9 @@ export function updateOrderStatus({ commit }, { orderId, status }) {
             return data;
         });
 }
+
+export function updateUser({ commit }, user) {
+    return axiosClient
+        .put(`/admin/shop-users/${user.id}`, user)
+        .then(({ data }) => data);
+}
