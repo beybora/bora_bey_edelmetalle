@@ -36,7 +36,8 @@
                     <th class="w-20 px-4 py-2">Image</th>
                     <th class="w-1/4 px-4 py-2">Title</th>
                     <th class="w-24 px-4 py-2">Price</th>
-                    <th class="w-56 px-4 py-2">Last updated</th>
+                    <th class="w-40 px-4 py-2">Created at</th>
+                    <th class="w-40 px-4 py-2">Category</th>
                     <th class="w-16 px-4 py-2 text-right">Actions</th>
                 </tr>
             </thead>
@@ -59,7 +60,8 @@
                         {{ product.title }}
                     </td>
                     <td class="px-4 py-2">{{ product.price }}</td>
-                    <td class="px-4 py-2">{{ product.updated_at }}</td>
+                    <td class="px-4 py-2">{{ product.created_at }}</td>
+                    <td class="px-4 py-2">{{ product.category || '-' }}</td>
                     <td class="px-4 py-2 text-right">
                         <Menu as="div" class="relative inline-block text-left">
                             <MenuButton class="p-2 hover:bg-gray-100 rounded">
