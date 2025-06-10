@@ -50,6 +50,12 @@ class ShopAuthController extends Controller
             ], 403);
         }
 
+        if ($user && !$user->is_active) {
+            return response()->json([
+                'message' => 'Your account is deactivated. Please contact the administrator.'
+            ], 403);
+        }
+
         if (!Auth::attempt($credentials, $remember)) {
             return response()->json(['message' => 'Login fehlgeschlagen'], 422);
         }
