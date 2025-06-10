@@ -16,6 +16,11 @@ class CategoryController extends Controller
 
     public function store(Request $request)
     {
+        if (Category::count() >= 4) {
+            return response()->json([
+                'message' => 'Maximal 4 Kategorien erlaubt.'
+            ], 422);
+        }
         $validated = $request->validate([
             'name' => ['required', 'string', 'max:255'],
             'slug' => ['nullable', 'string', 'max:255', 'unique:categories,slug'],
