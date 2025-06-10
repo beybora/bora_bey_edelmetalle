@@ -70,3 +70,35 @@ export function setOrders(state, orders) {
 export function setOrdersLoading(state, loading) {
     state.orders.loading = loading;
 }
+
+export function setNotifications(state, notifications) {
+    state.notifications.data = notifications;
+}
+
+export function setNotificationsLoading(state, loading) {
+    state.notifications.loading = loading;
+}
+
+export function setUnreadCount(state, count) {
+    state.notifications.unreadCount = count;
+}
+
+export function markNotificationAsRead(state, id) {
+    const notification = state.notifications.data.find(n => n.id === id);
+    if (notification) {
+        notification.is_read = true;
+        state.notifications.unreadCount = Math.max(0, state.notifications.unreadCount - 1);
+    }
+}
+
+export function markAllNotificationsAsRead(state) {
+    state.notifications.data.forEach(n => n.is_read = true);
+    state.notifications.unreadCount = 0;
+}
+
+export function updateOrder(state, updatedOrder) {
+    const index = state.orders.data.findIndex(o => o.id === updatedOrder.id);
+    if (index !== -1) {
+        state.orders.data[index] = updatedOrder;
+    }
+}

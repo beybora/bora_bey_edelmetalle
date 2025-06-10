@@ -101,3 +101,42 @@ export function getOrders({ commit }) {
             commit("setOrdersLoading", false);
         });
 }
+
+export function getNotifications({ commit }) {
+    commit("setNotificationsLoading", true);
+    return axiosClient
+        .get("/admin/notifications")
+        .then(({ data }) => {
+            commit("setNotifications", data);
+            commit("setUnreadCount", data.filter(n => !n.is_read).length);
+            return data;
+        })
+        .finally(() => {
+            commit("setNotificationsLoading", false);
+        });
+}
+
+export function markNotificationAsRead({ commit }, id) {
+    return axiosClient
+        .put(`/admin/notifications/${id}/read`)
+        .then(() => {
+            commit("markNotificationAsRead", id);
+        });
+}
+
+export function markAllNotificationsAsRead({ commit }) {
+    return axiosClient
+        .put("/admin/notifications/read-all")
+        .then(() => {
+            commit("markAllNotificationsAsRead");
+        });
+}
+
+export function updateOrderStatus({ commit }, { orderId, status }) {
+    return axiosClient
+        .put(`/admin/orders/${orderId}/status`, { status })
+        .then(({ data }) => {
+            commit("updateOrder", data.order);
+            return data;
+        });
+}

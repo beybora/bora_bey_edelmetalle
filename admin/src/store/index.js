@@ -25,6 +25,11 @@ const store = createStore({
             loading: false,
             data: [],
         },
+        notifications: {
+            loading: false,
+            data: [],
+            unreadCount: 0
+        }
     },
     getters: getters,
     actions: actions,
