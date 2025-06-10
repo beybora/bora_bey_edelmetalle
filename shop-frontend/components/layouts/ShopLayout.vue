@@ -31,12 +31,10 @@
                 <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
                     <div class="flex h-16 items-center justify-between">
                         <div class="flex items-center">
-                            <NuxtLink
-                                to="/"
-                                class="text-white text-lg font-bold"
-                            >
-                                BB Edelmetalle
+                            <NuxtLink to="/">
+                                <img src="/assets/css/b1f43aed-a95f-4aec-8495-3ab311b2ad82.png" alt="Bora Edelmetalle Logo" class="h-30 w-auto mr-2" />
                             </NuxtLink>
+
                         </div>
 
                         <div class="hidden lg:flex flex-1 justify-center">
@@ -124,6 +122,19 @@
             <main class="mx-auto max-w-7xl px-4 py-10">
                 <slot />
             </main>
+            <footer class="bg-gray-900 text-gray-300 py-6 mt-12">
+              <div class="max-w-7xl mx-auto px-4 flex flex-col md:flex-row items-center justify-between">
+                <div class="flex items-center">
+                            <NuxtLink to="/">
+                               Bora Bey Edelmetalle
+                            </NuxtLink>
+
+                        </div>
+                <div class="flex flex-col md:flex-row items-center space-y-2 md:space-y-0 md:space-x-4">
+                  <div class="text-sm">&copy; {{ new Date().getFullYear() }} All rights reserved.</div>
+                </div>
+              </div>
+            </footer>
         </div>
     </div>
 </template>
