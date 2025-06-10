@@ -1,10 +1,15 @@
 <template>
     <div class="bg-white px-4 sm:px-6 lg:px-8">
-        <h1 class="text-2xl font-bold tracking-tight text-gray-900 my-10">
-            Shopping Cart
-        </h1>
+        <div v-if="cart.items.length === 0" class="flex flex-col items-center justify-center py-24">
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-16 w-16 text-gray-300 mb-6" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13l-1.35 2.7A2 2 0 007.48 19h9.04a2 2 0 001.83-1.3L17 13M7 13V6a1 1 0 011-1h5a1 1 0 011 1v7" /></svg>
+            <div class="text-2xl font-semibold text-gray-700 mb-2">Dein Warenkorb ist leer</div>
+            <div class="text-gray-500 mb-6">Füge Produkte hinzu, um deinen Einkauf zu starten.</div>
+            <div class="flex gap-4">
+                <NuxtLink to="/" class="px-6 py-2 bg-indigo-600 text-white rounded hover:bg-indigo-700 transition">Zur Startseite</NuxtLink>
+            </div>
+        </div>
 
-        <div class="grid grid-cols-1 lg:grid-cols-12 gap-x-8 gap-y-10">
+        <div v-else class="grid grid-cols-1 lg:grid-cols-12 gap-x-8 gap-y-10">
             <!-- Cart Items -->
             <div class="lg:col-span-8">
                 <ul role="list" class="divide-y divide-gray-200">

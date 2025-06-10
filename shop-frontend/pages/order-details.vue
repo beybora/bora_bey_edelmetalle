@@ -1,7 +1,6 @@
 <template>
   <ShopLayout>
     <div class="max-w-2xl mx-auto py-10">
-      <button @click="$router.back()" class="mb-4 text-indigo-600 hover:underline">← Zurück</button>
       <h1 class="text-2xl font-bold mb-4">Bestellung #{{ order?.id }}</h1>
       <div v-if="loading" class="text-gray-500">Lade Bestelldaten...</div>
       <div v-else-if="order">
