@@ -87,4 +87,29 @@ class OrderController extends Controller
 
         return response()->json(['message' => 'Order cancelled']);
     }
+
+    public function getNotifications(Request $request)
+    {
+        $notifications = $request->user()->notifications()
+            ->latest()
+            ->take(10)
+            ->get();
+
+        return response()->json($notifications);
+    }
+
+    public function markNotificationAsRead($id, Request $request)
+    {
+        $notification = $request->user()->notifications()->findOrFail($id);
+        $notification->is_read = true;
+        $notification->save();
+
+        return response()->json(['message' => 'Notification marked as read']);
+    }
+
+    public function markAllNotificationsAsRead(Request $request)
+    {
+        $request->user()->notifications()->update(['is_read' => true]);
+        return response()->json(['message' => 'All notifications marked as read']);
+    }
 }
