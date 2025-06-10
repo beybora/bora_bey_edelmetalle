@@ -39,6 +39,12 @@ Route::prefix('admin')->group(function () {
         // Admin Orders
         Route::get('/orders', [\App\Http\Controllers\Admin\OrderController::class, 'index']);
         Route::get('/orders/{id}', [\App\Http\Controllers\Admin\OrderController::class, 'show']);
+        Route::put('/orders/{id}/status', [\App\Http\Controllers\Admin\OrderController::class, 'updateStatus']);
+
+        // Notifications
+        Route::get('/notifications', [\App\Http\Controllers\Admin\OrderController::class, 'getNotifications']);
+        Route::put('/notifications/{id}/read', [\App\Http\Controllers\Admin\OrderController::class, 'markNotificationAsRead']);
+        Route::put('/notifications/read-all', [\App\Http\Controllers\Admin\OrderController::class, 'markAllNotificationsAsRead']);
     });
 });
 
@@ -83,6 +89,11 @@ Route::prefix('shop')->group(function () {
         Route::get('/orders', [OrderController::class, 'index']);
         Route::get('/orders/{id}', [OrderController::class, 'show']);
         Route::delete('/orders/{id}', [OrderController::class, 'cancel']);
+
+        // Notifications
+        Route::get('/notifications', [OrderController::class, 'getNotifications']);
+        Route::put('/notifications/{id}/read', [OrderController::class, 'markNotificationAsRead']);
+        Route::put('/notifications/read-all', [OrderController::class, 'markAllNotificationsAsRead']);
     });
 });
 
