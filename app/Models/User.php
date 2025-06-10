@@ -60,4 +60,14 @@ class User extends Authenticatable
     {
         return $this->hasMany(\App\Models\Order::class, 'created_by');
     }
+
+    public function notifications()
+    {
+        return $this->hasMany(Notification::class);
+    }
+
+    public function unreadNotifications()
+    {
+        return $this->notifications()->where('is_read', false);
+    }
 }
