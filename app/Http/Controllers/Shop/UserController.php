@@ -79,4 +79,14 @@ class UserController extends Controller
 
         return response()->json($users);
     }
+
+    public function update(Request $request, $id)
+    {
+        $user = User::findOrFail($id);
+        $data = $request->validate([
+            'is_active' => ['required', 'boolean'],
+        ]);
+        $user->update($data);
+        return response()->json($user);
+    }
 }
