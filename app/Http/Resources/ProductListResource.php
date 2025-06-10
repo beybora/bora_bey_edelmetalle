@@ -19,7 +19,8 @@ class ProductListResource extends JsonResource
             'title' => $this->title,
             'price' => $this->price,
             'image' => $this->image,
-            'updated_at' => $this->updated_at->format('Y-m-d H:i:s'),
+            'created_at' => $this->created_at ? $this->created_at->format('Y-m-d') : null,
+            'category' => $this->category ? $this->category->name : null,
         ];
     }
 }

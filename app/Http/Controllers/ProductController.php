@@ -27,7 +27,7 @@ class ProductController extends Controller
         // Sortierung anwenden
         $query->orderBy($sortField, $sortDirection);
 
-        $products = $query->paginate($perPage)->withQueryString();
+        $products = $query->with('category')->paginate($perPage)->withQueryString();
 
         return ProductListResource::collection($products);
     }
