@@ -24,8 +24,8 @@ class ProductController extends Controller
             $query->where('title', 'like', '%' . $request->search . '%');
         }
 
-        $products = $query->orderBy('created_at', 'desc')->get();
-
+        $perPage = $request->get('per_page', 8);
+        $products = $query->orderBy('created_at', 'desc')->paginate($perPage);
         return ProductListResource::collection($products);
     }
 

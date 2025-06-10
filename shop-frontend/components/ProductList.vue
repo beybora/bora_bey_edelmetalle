@@ -30,6 +30,24 @@
         <div v-if="!loading && products.length === 0" class="text-center py-12">
             <p class="text-gray-500 text-lg">No products found.</p>
         </div>
+
+        <div v-if="lastPage > 1" class="flex justify-center mt-8 space-x-2">
+            <button
+                class="px-3 py-1 rounded bg-gray-200 hover:bg-gray-300 text-gray-700"
+                :disabled="currentPage === 1"
+                @click="prevPage"
+            >
+                Previous
+            </button>
+            <span class="px-3 py-1 text-gray-700">Page {{ currentPage }} of {{ lastPage }}</span>
+            <button
+                class="px-3 py-1 rounded bg-gray-200 hover:bg-gray-300 text-gray-700"
+                :disabled="currentPage === lastPage"
+                @click="nextPage"
+            >
+                Next
+            </button>
+        </div>
     </div>
 </template>
 
@@ -45,12 +63,26 @@ const categoryStore = useCategoriesStore();
 const products = computed(() => productStore.products);
 const loading = computed(() => productStore.loading);
 const selectedSlug = computed(() => categoryStore.selectedCategorySlug);
+const currentPage = computed(() => productStore.currentPage);
+const lastPage = computed(() => productStore.lastPage);
+
+function nextPage() {
+    if (currentPage.value < lastPage.value) {
+        productStore.fetchAll({ page: currentPage.value + 1 });
+    }
+}
+
+function prevPage() {
+    if (currentPage.value > 1) {
+        productStore.fetchAll({ page: currentPage.value - 1 });
+    }
+}
 
 onMounted(() => {
-    productStore.fetchAll();
+    productStore.fetchAll({ page: 1 });
 });
 
 watch(selectedSlug, () => {
-    productStore.fetchAll();
+    productStore.fetchAll({ page: 1 });
 });
 </script>

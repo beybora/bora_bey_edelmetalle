@@ -6,6 +6,10 @@ export const useProductsStore = defineStore("products", {
     state: () => ({
         products: [],
         loading: false,
+        currentPage: 1,
+        lastPage: 1,
+        total: 0,
+        perPage: 8,
     }),
 
     actions: {
@@ -20,6 +24,8 @@ export const useProductsStore = defineStore("products", {
                     ...options,
                     search: categoryStore.search || undefined,
                     category: categoryStore.selectedCategorySlug || undefined,
+                    page: options.page || this.currentPage || 1,
+                    per_page: 8,
                 };
 
                 const res = await $axios.get("/shop/products", {
@@ -29,7 +35,11 @@ export const useProductsStore = defineStore("products", {
                     params,
                 });
 
-                this.products = res.data.data || res.data.products || [];
+                this.products = res.data.data || [];
+                this.currentPage = res.data.meta?.current_page || 1;
+                this.lastPage = res.data.meta?.last_page || 1;
+                this.total = res.data.meta?.total || 0;
+                this.perPage = res.data.meta?.per_page || 8;
             } catch (error) {
                 console.error("Error fetching products", error);
             } finally {
