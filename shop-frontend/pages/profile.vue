@@ -28,7 +28,9 @@
           <tbody>
             <tr v-for="order in orders" :key="order.id" class="hover:bg-gray-50 transition">
               <td class="p-2 border">{{ order.id }}</td>
-              <td class="p-2 border">{{ order.status }}</td>
+              <td class="p-2 border">
+                <span :class="getStatusClass(order.status)">{{ order.status }}</span>
+              </td>
               <td class="p-2 border">{{ order.total_price }} €</td>
               <td class="p-2 border">
                 {{ formatDate(order.created_at) }}
@@ -60,6 +62,17 @@ const orders = computed(() => ordersStore.orders);
 function formatDate(dateString) {
   if (!dateString) return '';
   return new Date(dateString).toLocaleString('de-DE');
+}
+
+function getStatusClass(status) {
+  const classes = {
+    pending: 'bg-yellow-100 text-yellow-800 px-2 rounded',
+    approved: 'bg-blue-100 text-blue-800 px-2 rounded',
+    shipped: 'bg-purple-100 text-purple-800 px-2 rounded',
+    delivered: 'bg-green-100 text-green-800 px-2 rounded',
+    cancelled: 'bg-red-100 text-red-800 px-2 rounded'
+  };
+  return classes[status] || '';
 }
 
 async function loadData() {
