@@ -51,14 +51,16 @@
                                 <AdjustmentsHorizontalIcon class="h-6 w-6" />
                             </button>
 
+                            <NotificationBell class="relative" icon-class="text-white hover:text-indigo-300" badge-class="absolute -top-1 -right-1 bg-red-600 text-white text-xs font-bold rounded-full h-5 w-5 flex items-center justify-center shadow" />
+
                             <NuxtLink
                                 to="/cart"
-                                class="relative text-gray-300 hover:text-white"
+                                class="relative flex items-center justify-center h-10 w-10 group"
                             >
-                                <ShoppingCartIcon class="h-6 w-6" />
+                                <ShoppingCartIcon class="h-6 w-6 text-white group-hover:text-indigo-300 transition" />
                                 <span
                                     v-if="cartCount > 0"
-                                    class="absolute -top-2 -right-2 bg-red-600 text-white text-xs rounded-full px-1"
+                                    class="absolute -top-1 -right-1 bg-red-600 text-white text-xs font-bold rounded-full h-5 w-5 flex items-center justify-center shadow"
                                 >
                                     {{ cartCount }}
                                 </span>
@@ -67,9 +69,9 @@
                             <div class="block">
                                 <Menu as="div" class="relative">
                                     <MenuButton
-                                        class="flex items-center text-sm text-white"
+                                        class="flex items-center text-sm text-white h-10 w-10 justify-center"
                                     >
-                                        <UserIcon class="h-5 w-5" />
+                                        <UserIcon class="h-5 w-5 text-white hover:text-indigo-300 transition" />
                                     </MenuButton>
                                     <MenuItems
                                         class="absolute right-0 mt-2 w-40 bg-white py-1 shadow-lg ring-1 ring-black/5"
@@ -145,6 +147,7 @@ import { useCartStore } from "~/stores/cart";
 import { useCategoriesStore } from "~/stores/categories";
 import { useRoute } from "vue-router";
 import FiltersNav from "~/components/FiltersNav.vue";
+import NotificationBell from '~/components/NotificationBell.vue';
 
 const auth = useAuthStore();
 const cart = useCartStore();
