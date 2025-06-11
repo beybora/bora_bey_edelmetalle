@@ -4,26 +4,7 @@
             v-if="loading"
             class="flex items-center justify-center min-h-screen"
         >
-            <svg
-                class="animate-spin h-10 w-10 text-gray-500"
-                xmlns="http://www.w3.org/2000/svg"
-                fill="none"
-                viewBox="0 0 24 24"
-            >
-                <circle
-                    class="opacity-25"
-                    cx="12"
-                    cy="12"
-                    r="10"
-                    stroke="currentColor"
-                    stroke-width="4"
-                />
-                <path
-                    class="opacity-75"
-                    fill="currentColor"
-                    d="M4 12a8 8 0 018-8v4l3-3-3-3v4a8 8 0 018 8h-4l3 3 3-3h-4a8 8 0 01-8 8v-4l-3 3 3 3v-4a8 8 0 01-8-8z"
-                />
-            </svg>
+            <Spinner />
         </div>
 
         <div v-else>
@@ -159,6 +140,7 @@ import { useCategoriesStore } from "~/stores/categories";
 import { useRoute } from "vue-router";
 import FiltersNav from "~/components/FiltersNav.vue";
 import NotificationBell from '~/components/NotificationBell.vue';
+import Spinner from '~/components/Spinner.vue';
 
 const auth = useAuthStore();
 const cart = useCartStore();
