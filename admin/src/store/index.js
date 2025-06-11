@@ -1,8 +1,6 @@
 import { createStore } from "vuex";
 import * as actions from "./actions";
 import * as mutations from "./mutations";
-import * as getters from "./getters";
-
 const store = createStore({
     state: {
         user: {
@@ -25,13 +23,13 @@ const store = createStore({
             loading: false,
             data: [],
         },
+
         notifications: {
             loading: false,
             data: [],
             unreadCount: 0
         }
     },
-    getters: getters,
     actions: actions,
     mutations: mutations,
 });

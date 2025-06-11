@@ -1,5 +1,4 @@
 import { createRouter, createWebHistory } from "vue-router";
-import Dashboard from "../views/Dashboard.vue";
 import Users from "../views/Users/Users.vue";
 import Reports from "../views/Reports.vue";
 import Products from "../views/Products/Products.vue";
@@ -19,11 +18,6 @@ const routes = [
             requiresAuth: true,
         },
         children: [
-            {
-                path: "dashboard",
-                name: "app.dashboard",
-                component: Dashboard,
-            },
             {
                 path: "products",
                 name: "app.products",
@@ -69,7 +63,7 @@ const routes = [
         redirect: (to) => {
             const isAuthenticated = store.state.user.token;
             return isAuthenticated
-                ? { name: "app.dashboard" }
+                ? { name: "app.orders" }
                 : { name: "login" };
         },
     },
