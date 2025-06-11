@@ -9,11 +9,8 @@
             </h1>
         </div>
 
-        <div v-if="loading" class="flex justify-center items-center min-h-[400px]">
-            <div class="relative">
-                <div class="w-12 h-12 rounded-full border-4 border-indigo-200"></div>
-                <div class="w-12 h-12 rounded-full border-4 border-indigo-600 border-t-transparent animate-spin absolute top-0"></div>
-            </div>
+        <div v-if="loading" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+            <ProductSkeleton v-for="n in 8" :key="n" />
         </div>
 
         <div
@@ -55,7 +52,8 @@
 import { computed, onMounted, watch } from "vue";
 import { useProductsStore } from "~/stores/products";
 import { useCategoriesStore } from "~/stores/categories";
-import ProductCard from "~/components/ProductCard.vue";
+import ProductCard from "~/components/products/ProductCard.vue";
+import ProductSkeleton from "~/components/products/ProductSkeleton.vue";
 
 const productStore = useProductsStore();
 const categoryStore = useCategoriesStore();

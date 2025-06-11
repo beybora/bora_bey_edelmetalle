@@ -9,5 +9,5 @@
 
 <script setup>
 import ShopLayout from "~/components/layouts/ShopLayout.vue";
-import ProductList from "~/components/ProductList.vue";
+import ProductList from "~/components/products/ProductList.vue";
 </script>
