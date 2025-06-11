@@ -1,5 +1,10 @@
 <template>
     <AuthLayout title="Login to your account">
+        <div class="bg-gray-300 text-sm text-gray-700 p-4 rounded mb-6">
+            Login:<br />
+            <strong>test@example.com</strong> <br />
+            <strong>password</strong>
+        </div>
         <form class="space-y-6" @submit.prevent="login">
             <div
                 v-if="errorMsg"
