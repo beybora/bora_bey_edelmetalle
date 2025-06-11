@@ -27,24 +27,14 @@
             </div>
             <div>
                 <h2 class="text-lg font-semibold mb-2">Items</h2>
-                <table class="table-auto w-full border mb-4">
-                    <thead>
-                        <tr class="bg-gray-100 text-left">
-                            <th class="p-2 border">Product</th>
-                            <th class="p-2 border">Quantity</th>
-                            <th class="p-2 border">Unit Price</th>
-                            <th class="p-2 border">Total</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr v-for="item in order.items" :key="item.id">
-                            <td class="p-2 border">{{ item.product?.title || '-' }}</td>
-                            <td class="p-2 border">{{ item.quantity }}</td>
-                            <td class="p-2 border">{{ Number(item.unit_price).toFixed(2) }} €</td>
-                            <td class="p-2 border">{{ (item.quantity * item.unit_price).toFixed(2) }} €</td>
-                        </tr>
-                    </tbody>
-                </table>
+                <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
+                    <div v-for="item in order.items" :key="item.id" class="bg-white rounded shadow p-3 flex flex-col items-center text-center">
+                        <div class="font-semibold text-gray-900 mb-1">{{ item.product?.title || '-' }}</div>
+                        <div class="text-xs text-gray-500 mb-1">Menge: {{ item.quantity }}</div>
+                        <div class="text-xs text-gray-500 mb-1">Stückpreis: {{ Number(item.unit_price).toFixed(2) }} €</div>
+                        <div class="text-xs text-gray-700 font-bold">Gesamt: {{ (item.quantity * item.unit_price).toFixed(2) }} €</div>
+                    </div>
+                </div>
             </div>
         </div>
         <div v-else class="text-gray-500">Order not found.</div>
