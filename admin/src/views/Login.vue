@@ -104,11 +104,14 @@ function login() {
         .dispatch("login", user)
         .then(() => {
             loading.value = false;
-            router.push({ name: "app.dashboard" });
+            router.push({ name: "app.orders" });
         })
         .catch((error) => {
             loading.value = false;
-            errorMsg.value = error.response.data.message;
+            errorMsg.value =
+                error.response?.data?.message ||
+                error.message ||
+                "Login fehlgeschlagen";
         });
 }
 </script>
