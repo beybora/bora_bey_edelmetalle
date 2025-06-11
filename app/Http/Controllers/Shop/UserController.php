@@ -87,6 +87,10 @@ class UserController extends Controller
             'is_active' => ['required', 'boolean'],
         ]);
         $user->update($data);
+        // Wenn der User deaktiviert wurde, alle Tokens löschen
+        if (array_key_exists('is_active', $data) && $data['is_active'] === false) {
+            $user->tokens()->delete();
+        }
         return response()->json($user);
     }
 }
