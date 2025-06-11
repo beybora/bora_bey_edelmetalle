@@ -1,14 +1,14 @@
 import { createRouter, createWebHistory } from "vue-router";
 import Dashboard from "../views/Dashboard.vue";
-import Users from "../views/Users.vue";
+import Users from "../views/Users/Users.vue";
 import Reports from "../views/Reports.vue";
 import Products from "../views/Products/Products.vue";
 import Login from "../views/Login.vue";
 import AppLayout from "../components/AppLayout.vue";
 import NotFound from "../views/NotFound.vue";
 import store from "../store/index.js";
-import Categories from "../views/Categories.vue";
-import Orders from "../views/Orders.vue";
+import Categories from "../views/Categories/Categories.vue";
+import Orders from "../views/Orders/Orders.vue";
 
 const routes = [
     {
