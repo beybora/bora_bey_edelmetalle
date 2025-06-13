@@ -30,7 +30,7 @@
                 @click="triggerSearch"
                 class="px-3 py-1 bg-indigo-600 hover:bg-indigo-700 text-white text-sm"
             >
-                🔍
+                <SearchIcon class="h-5 w-5" />
             </button>
         </div>
     </div>
@@ -41,6 +41,7 @@ import { ref, computed, onMounted } from "vue";
 import { useCategoriesStore } from "~/stores/categories";
 import { useProductsStore } from "~/stores/products";
 import { useRouter, useRoute } from "vue-router";
+import SearchIcon from '~/components/icons/SearchIcon.vue';
 
 const props = defineProps({
     isMobile: Boolean,
