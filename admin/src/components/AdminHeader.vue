@@ -2,7 +2,7 @@
     <header class="flex justify-end items-center p-3 h-14 shadow bg-white">
         <Menu as="div" class="relative inline-block text-left">
             <MenuButton class="flex items-center">
-                <UserIcon class="w-6 h-6 text-gray-700 mr-2" />
+                <UserNavIcon class="w-6 h-6 text-gray-700 mr-2" />
                 <small>{{ currentUser }}</small>
                 <ChevronDownIcon
                     class="h-5 w-5 text-gray-500 hover:text-gray-700 ml-1"
@@ -32,7 +32,7 @@
                                     'group flex w-full items-center rounded-md px-2 py-2 text-sm',
                                 ]"
                             >
-                                <ArrowRightOnRectangleIcon
+                                <LogoutIcon
                                     class="mr-2 h-5 w-5"
                                     aria-hidden="true"
                                 />
@@ -47,15 +47,13 @@
 </template>
 
 <script setup>
-import {
-    ChevronDownIcon,
-    UserIcon,
-    ArrowRightOnRectangleIcon,
-} from "@heroicons/vue/20/solid";
+import { ChevronDownIcon } from "@heroicons/vue/20/solid";
 import { Menu, MenuButton, MenuItems, MenuItem } from "@headlessui/vue";
 import store from "../store/index.js";
 import router from "../router/index.js";
 import { computed } from "vue";
+import UserNavIcon from './icons/UserNavIcon.vue';
+import LogoutIcon from './icons/LogoutIcon.vue';
 
 const emit = defineEmits(["toggle-sidebar"]);
 
