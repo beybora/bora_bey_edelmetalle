@@ -34,11 +34,33 @@ export const useAuthStore = defineStore("auth", () => {
         user.value = res.data.user;
     }
 
-    function logout() {
-        token.value = null;
-        user.value = null;
-        navigateTo("/auth/login");
+    async function logout() {
+        const { $axios } = useNuxtApp();
+        try {
+            await $axios.post("/shop/logout", {}, {
+                headers: {
+                    Authorization: `Bearer ${token.value}`,
+                },
+            });
+        } catch (error) {
+            console.error("Logout error:", error);
+        } finally {
+
+            const cart = useCartStore();
+            const orders = useOrdersStore();
+
+            cart.items = [];
+            orders.orders = [];
+            orders.notifications = [];
+            orders.unreadCount = 0;
+
+            token.value = null;
+            user.value = null;
+
+            navigateTo("/");
+        }
     }
+
     async function updatePassword(data) {
         const { $axios } = useNuxtApp();
 
