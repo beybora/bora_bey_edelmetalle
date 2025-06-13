@@ -52,6 +52,10 @@ import { useAuthStore } from '~/stores/auth';
 import { useOrdersStore } from '~/stores/orders';
 import ShopLayout from '~/components/layouts/ShopLayout.vue';
 
+definePageMeta({
+  middleware: ['auth']
+});
+
 const loading = ref(true);
 const auth = useAuthStore();
 const ordersStore = useOrdersStore();

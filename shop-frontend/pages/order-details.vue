@@ -56,6 +56,10 @@ import { useRoute, useRouter } from 'vue-router';
 import { useAuthStore } from '~/stores/auth';
 import ShopLayout from '~/components/layouts/ShopLayout.vue';
 
+definePageMeta({
+  middleware: ['auth']
+});
+
 const order = ref(null);
 const loading = ref(true);
 const route = useRoute();

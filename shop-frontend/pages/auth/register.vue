@@ -114,6 +114,10 @@ import { useRouter } from "vue-router";
 import { useAuthStore } from "~/stores/auth";
 import AuthLayout from "~/components/layouts/AuthLayout.vue";
 
+definePageMeta({
+  middleware: ['guest']
+});
+
 const router = useRouter();
 const auth = useAuthStore();
 
@@ -133,7 +137,7 @@ async function register() {
 
     try {
         await auth.register(user.value);
-        await router.push("/"); // ⬅️ ebenfalls zurück zur Startseite
+        await router.push("/");
     } catch (error) {
         errorMsg.value =
             error.response?.data?.message || "Registrierung fehlgeschlagen";

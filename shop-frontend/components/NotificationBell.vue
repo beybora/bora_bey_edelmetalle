@@ -20,7 +20,7 @@
         />
       </svg>
       <span
-        v-if="unreadCount > 0"
+        v-if="isLoggedIn && unreadCount > 0"
         :class="badgeClass"
       >
         {{ unreadCount }}
@@ -29,7 +29,7 @@
 
     <!-- Notifications Dropdown -->
     <div
-      v-if="isOpen"
+      v-if="isLoggedIn && isOpen"
       class="absolute right-0 left-0 mx-auto mt-2 w-80 bg-white rounded-lg shadow-lg overflow-hidden z-50"
       style="left: 50%; transform: translateX(-50%);"
     >
@@ -80,8 +80,9 @@
 </template>
 
 <script setup>
-import { ref, onMounted, onUnmounted } from 'vue';
+import { ref, computed, onMounted, onUnmounted } from 'vue';
 import { useOrdersStore } from '~/stores/orders';
+import { useAuthStore } from '~/stores/auth';
 
 const props = defineProps({
   iconClass: { type: String, default: '' },
@@ -89,11 +90,17 @@ const props = defineProps({
 });
 
 const ordersStore = useOrdersStore();
+const authStore = useAuthStore();
 const isOpen = ref(false);
 const notifications = ref([]);
 const unreadCount = ref(0);
 
+const isLoggedIn = computed(() => authStore.token);
+
 const toggleNotifications = () => {
+  if (!isLoggedIn.value) {
+    return navigateTo('/auth/login');
+  }
   isOpen.value = !isOpen.value;
   if (isOpen.value) {
     fetchNotifications();
@@ -101,6 +108,7 @@ const toggleNotifications = () => {
 };
 
 const fetchNotifications = async () => {
+  if (!isLoggedIn.value) return;
   await ordersStore.fetchNotifications();
   notifications.value = ordersStore.notifications;
   unreadCount.value = ordersStore.unreadCount;
@@ -140,7 +148,8 @@ const handleClickOutside = (event) => {
 };
 
 onMounted(() => {
-  fetchNotifications();
+  // Lade keine Notifications für Gäste
+  if (isLoggedIn.value) fetchNotifications();
   document.addEventListener('click', handleClickOutside);
 });
 

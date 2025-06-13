@@ -35,6 +35,7 @@
                             <NuxtLink
                                 to="/cart"
                                 class="relative flex items-center justify-center h-10 w-10 group"
+                                @click="handleCartClick"
                             >
                                 <ShoppingCartIcon class="h-6 w-6 text-white group-hover:text-indigo-300 transition" />
                                 <span
@@ -177,4 +178,10 @@ onMounted(async () => {
     if (auth.token) await cart.fetchCart();
     loading.value = false;
 });
+
+const handleCartClick = () => {
+  if (!auth.token) {
+    return navigateTo('/auth/login');
+  }
+};
 </script>
