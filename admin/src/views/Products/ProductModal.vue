@@ -1,5 +1,5 @@
 <template>
-    <TransitionRoot appear :show="modelValue" as="template">
+    <TransitionRoot appear :show="modelValue" as="template" @after-leave="$emit('closed')">
         <Dialog as="div" class="relative z-10" @close="closeModal">
             <TransitionChild
                 as="template"
@@ -34,8 +34,8 @@
                             >
                                 {{
                                     product.id
-                                        ? "Update product"
-                                        : "Create new product"
+                                        ? "Update Product"
+                                        : "Create New Product"
                                 }}
                             </DialogTitle>
                             <div v-if="errorMsg" class="mb-2 p-3 bg-red-100 text-red-700 rounded">
@@ -47,46 +47,49 @@
                             <form @submit.prevent="onSubmit">
                                 <CustomInput
                                     v-model="product.title"
-                                    label="Title"
+                                    label="Product Title"
+                                    placeholder="Enter product title"
                                     class="mb-4"
                                 />
                                 <CustomInput
                                     v-model="product.description"
                                     label="Description"
+                                    placeholder="Enter product description"
                                     class="mb-4"
                                 />
                                 <CustomInput
                                     v-model="product.price"
                                     type="number"
                                     label="Price"
+                                    placeholder="Enter product price"
                                     class="mb-4"
                                 />
                                 <CustomInput
                                     v-model="product.image"
                                     label="Image URL"
+                                    placeholder="Enter image URL"
                                     class="mb-4"
                                 />
-                                <div class="mb-4">
-                                    <label class="block text-sm font-medium text-gray-700 mb-1">Category</label>
-                                    <select v-model="product.category_id" class="w-full border rounded px-3 py-2">
-                                        <option value="">No category</option>
-                                        <option v-for="cat in categories" :key="cat.id" :value="cat.id">{{ cat.name }}</option>
-                                    </select>
-                                </div>
+                                <CustomSelect
+                                    v-model="product.category_id"
+                                    label="Category"
+                                    placeholder="No category"
+                                    :options="categoryOptions"
+                                    class="mb-4"
+                                />
 
                                 <div class="flex justify-end space-x-2 mt-6">
-                                    <button
+                                    <CustomButton
                                         type="button"
-                                        class="px-4 py-2 bg-gray-100 text-sm rounded border"
+                                        variant="secondary"
                                         @click="onCancel"
                                     >
                                         Cancel
-                                    </button>
+                                    </CustomButton>
 
-                                    <button
+                                    <CustomButton
                                         type="submit"
                                         :disabled="loading"
-                                        class="px-4 py-2 bg-indigo-600 text-white text-sm rounded hover:bg-indigo-700"
                                     >
                                         {{
                                             loading
@@ -95,7 +98,7 @@
                                                 ? "Update"
                                                 : "Create"
                                         }}
-                                    </button>
+                                    </CustomButton>
                                 </div>
                             </form>
                         </DialogPanel>
@@ -116,9 +119,11 @@ import {
     TransitionRoot,
 } from "@headlessui/vue";
 import CustomInput from "../../components/core/CustomInput.vue";
+import CustomButton from "../../components/core/CustomButton.vue";
+import CustomSelect from "../../components/core/CustomSelect.vue";
 import store from "../../store/index.js";
 
-const emit = defineEmits(["update:modelValue", "updated"]);
+const emit = defineEmits(["update:modelValue", "updated", "closed"]);
 
 const props = defineProps({
     modelValue: Boolean,
@@ -131,6 +136,12 @@ const errorMsg = ref("");
 const errorDetails = ref([]);
 
 const categories = computed(() => store.state.categories.data);
+const categoryOptions = computed(() =>
+    categories.value.map((cat) => ({
+        value: cat.id,
+        text: cat.name,
+    }))
+);
 
 onMounted(() => {
     if (!store.state.categories.data.length) {
@@ -142,7 +153,8 @@ watch(
     () => props.product,
     (newProduct) => {
         product.value = { ...newProduct };
-    }
+    },
+    { deep: true, immediate: true }
 );
 
 function closeModal() {
@@ -153,9 +165,6 @@ function closeModal() {
 
 function onCancel() {
     closeModal();
-    product.value = { ...props.product };
-    errorMsg.value = "";
-    errorDetails.value = [];
 }
 
 async function onSubmit() {
@@ -167,10 +176,10 @@ async function onSubmit() {
         const response = await store.dispatch(action, product.value);
         if (response && response.data && response.data.id) {
             emit("updated");
-            onCancel();
+            closeModal();
         }
     } catch (err) {
-        errorMsg.value = err.response?.data?.message || "Unbekannter Fehler beim Speichern.";
+        errorMsg.value = err.response?.data?.message || "Unknown error while saving.";
         if (err.response?.data?.errors) {
             errorDetails.value = Object.values(err.response.data.errors).flat();
         }

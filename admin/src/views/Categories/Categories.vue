@@ -5,33 +5,30 @@
                 @submit.prevent="createCategory"
                 class="flex flex-col sm:flex-row sm:items-center gap-2 mb-6"
             >
-                <input
+                <CustomInput
+                    type="text"
+                    placeholder="Enter category name"
                     v-model="newCategory.name"
-                    type="text"
-                    placeholder="Name"
-                    class="border p-2 w-full sm:w-auto rounded"
+                    :disabled="categories.length >= 4"
                     required
-                    :disabled="categories.length >= 4"
-                    :class="categories.length >= 4 ? 'bg-gray-200 text-gray-500 cursor-not-allowed' : ''"
+                    class="w-full sm:w-auto"
                 />
-                <input
-                    v-model="newCategory.slug"
+                <CustomInput
                     type="text"
-                    placeholder="Slug"
-                    class="border p-2 w-full sm:w-auto rounded"
+                    placeholder="Enter category slug"
+                    v-model="newCategory.slug"
                     :disabled="categories.length >= 4"
-                    :class="categories.length >= 4 ? 'bg-gray-200 text-gray-500 cursor-not-allowed' : ''"
+                    class="w-full sm:w-auto"
                 />
-                <button
+                <CustomButton
                     type="submit"
-                    class="bg-indigo-600 text-white px-4 py-2 rounded hover:bg-indigo-700"
                     :disabled="categories.length >= 4"
-                    :class="categories.length >= 4 ? 'bg-gray-300 text-gray-500 cursor-not-allowed border border-gray-300 hover:bg-gray-300' : ''"
+                    class="w-full sm:w-auto"
                 >
                     Create
-                </button>
+                </CustomButton>
             </form>
-            <div v-if="categories.length >= 4" class="mb-4 text-red-600 font-semibold">
+            <div v-if="categories.length >= 4" class="mb-4 text-red-600">
                 Maximum of 4 categories allowed. Please delete a category to add a new one.
             </div>
             <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
@@ -49,6 +46,8 @@
 import { ref, computed, onMounted } from "vue";
 import store from "../../store/index.js";
 import CategoryCard from "./CategoryCard.vue";
+import CustomInput from "../../components/core/CustomInput.vue";
+import CustomButton from "../../components/core/CustomButton.vue";
 
 const newCategory = ref({ name: "", slug: "" });
 

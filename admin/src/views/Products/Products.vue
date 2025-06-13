@@ -2,29 +2,27 @@
     <div>
         <div class="flex items-center justify-between mb-3">
             <h1 class="text-2xl font-bold mb-4">Products</h1>
-            <button
+            <CustomButton
                 @click="showModal = true"
-                class="py-2 px-4 border border-transparent text-sm font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
             >
                 Add new product
-            </button>
+            </CustomButton>
         </div>
 
         <div class="mb-4 flex flex-col sm:flex-row sm:items-center gap-2">
-            <input
+            <CustomInput
                 type="text"
                 v-model="search"
+                placeholder="Search products"
                 @keyup.enter="() => getProducts(1)"
-                placeholder="Search..."
-                class="w-full sm:w-1/3 px-3 py-2 border border-gray-300 rounded-md focus:ring-indigo-500"
+                class="w-full sm:w-1/3"
             />
-            <select
+            <CustomSelect
                 v-model="perPage"
+                :options="perPageOptions"
                 @change="() => getProducts(1)"
-                class="w-full sm:w-24 px-3 py-2 border border-gray-300 rounded-md focus:ring-indigo-500"
-            >
-                <option v-for="opt in [5, 10, 20, 50, 100]" :key="opt" :value="opt">{{ opt }}</option>
-            </select>
+                class="w-full sm:w-24"
+            />
         </div>
 
         <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
@@ -65,15 +63,19 @@
             v-model="showModal"
             :product="selectedProduct"
             @updated="getProducts"
+            @closed="handleModalClosed"
         />
     </div>
 </template>
 
 <script setup>
-import { ref, computed, onMounted } from "vue";
+import { ref, computed, onMounted, watch } from "vue";
 import ProductModal from "./ProductModal.vue";
 import ProductCard from "./ProductCard.vue";
 import store from "../../store/index.js";
+import CustomInput from "../../components/core/CustomInput.vue";
+import CustomButton from "../../components/core/CustomButton.vue";
+import CustomSelect from "../../components/core/CustomSelect.vue";
 
 const perPage = ref(10);
 const search = ref("");
@@ -82,9 +84,20 @@ const products = computed(() => store.state.products.data);
 const showModal = ref(false);
 const selectedProduct = ref({});
 
+const perPageOptions = computed(() =>
+    [5, 10, 20, 50, 100].map((num) => ({
+        value: num,
+        text: num,
+    }))
+);
+
 onMounted(() => {
     getProducts();
 });
+
+function handleModalClosed() {
+    selectedProduct.value = {};
+}
 
 function getProducts(page = 1) {
     store.dispatch("getProducts", {
