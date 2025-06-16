@@ -101,7 +101,7 @@
                 </transition>
             </Disclosure>
 
-            <main class="mx-auto max-w-7xl px-4 py-10 min-h-[90vh]" style="min-height:90vh;">
+            <main class="mx-auto max-w-7xl px-4 py-8 min-h-[90vh]" style="min-height:90vh;">
                 <slot />
             </main>
             <footer class="bg-gray-900 text-gray-300 py-6 mt-12">

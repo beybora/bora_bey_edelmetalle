@@ -1,7 +1,7 @@
 <!-- pages/index.vue -->
 <template>
     <ShopLayout>
-        <div class="p-8">
+        <div>
             <ProductList />
         </div>
     </ShopLayout>
