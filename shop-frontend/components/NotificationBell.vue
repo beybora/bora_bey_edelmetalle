@@ -18,7 +18,7 @@
     <div
       v-if="isLoggedIn && isOpen"
       class="absolute right-0 left-0 mx-auto mt-2 w-80 bg-white rounded-lg shadow-lg overflow-hidden z-50"
-      style="left: 50%; transform: translateX(-50%);"
+      style="left: 50%; transform: translateX(-60%);"
     >
       <div class="p-4 border-b">
         <div class="flex justify-between items-center">
